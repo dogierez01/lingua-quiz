@@ -631,7 +631,7 @@
         document.getElementById('mic-btn').classList.remove('mic-pulsing');
     }
 
-    // --- THE LENIENCY ENGINE (UPGRADED) ---
+    // --- THE LENIENCY ENGINE (TARGETED) ---
     function normalizeText(str) {
         let s = str.toLowerCase();
 
@@ -651,22 +651,18 @@
         // 2. Remove all punctuation
         s = s.replace(/[.,?!'’"‑-]/g, "");
 
-        // 3. Synonym Leniency Mapping
+        // 3. Synonym Leniency Mapping (Strictly per user approval)
         const synonyms = {
+            "vacation": "holiday",
+            "movie": "film",
+            "test": "exam",
             "mistake": "error",
-            "everyone": "everybody",
-            "anyone": "anybody",
-            "no one": "nobody",
             "sick": "ill",
             "mad": "angry",
-            "vacation": "holiday",
-            "test": "exam",
-            "repair": "fix",
             "cab": "taxi",
-            "can not": "cannot",
-            "must": "have to",
-            "need to": "have to",
-            "ought to": "should",
+            "cash": "money",
+            "repair": "fix",
+            "correct": "fix", 
             "complete": "finish",
             "in order to": "to" 
         };
@@ -718,7 +714,8 @@
                 feedbackEl.textContent = `You said: "${spokenText}". Missed! Try one more time.`;
                 feedbackEl.style.color = "#e74c3c";
             } else {
-                feedbackEl.textContent = "Failed. Out of attempts!";
+                // UPDATE: Now shows what the user said even on the final failure!
+                feedbackEl.textContent = `You said: "${spokenText}". Failed!`;
                 feedbackEl.style.color = "#e74c3c";
                 enTextEl.textContent = targetText;
                 enTextEl.style.display = "block";
