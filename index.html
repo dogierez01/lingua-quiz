@@ -40,7 +40,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             background-color: #000;
             box-shadow: 0 0 10px #00ffff, 0 0 30px #00b7ff, 0 0 60px #00b7ff, inset 0 0 20px #00ffff;
             border: 3px solid #ffffff;
@@ -67,6 +67,60 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-bottom: 25px;
+        }
+
+        .start-btn-main:hover {
+            transform: scale(1.05);
+            background-color: #279672;
+            box-shadow: 0 0 20px #279672;
+        }
+
+        /* --- DASHBOARD STYLES --- */
+        .dashboard-container {
+            background-color: #111111;
+            border: 2px solid #333333;
+            border-radius: 12px;
+            padding: 15px;
+            width: 100%;
+            max-width: 320px;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .last-attempt {
+            color: #2ecc71;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #444;
+        }
+
+        .dashboard-container h3 {
+            margin: 0 0 10px 0;
+            color: #00b7ff;
+            font-size: 1rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: #cccccc;
+            padding: 4px 8px;
+            background-color: #000000;
+            border-radius: 4px;
+        }
+
+        .score-row span:nth-child(2) {
+            font-weight: bold;
+            color: #ffffff;
         }
 
         /* --- QUIZ CONTAINER STYLES --- */
@@ -110,6 +164,8 @@
         }
 
         .restart-header-btn { border-color: #e74c3c; color: #e74c3c; }
+        .return-btn:hover { background-color: #333333; border-color: #ffffff; }
+        .restart-header-btn:hover { background-color: #e74c3c; color: white; }
 
         .tally { font-size: 1.05rem; font-weight: bold; }
         .tally-correct { color: #2ecc71; margin-right: 10px; }
@@ -149,7 +205,7 @@
             width: 100%;
         }
 
-        .result-screen h1 { color: #2ecc71; font-size: 1.9rem; }
+        .result-screen h1 { color: #2ecc71; font-size: 1.9rem; margin-bottom: 15px; }
         #score-text { font-size: 1.4rem; }
     </style>
 </head>
@@ -160,6 +216,12 @@
         <img src="logo.png" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found';">
     </div>
     <button class="start-btn-main" onclick="startQuiz()">START QUIZ</button>
+    
+    <div class="dashboard-container" id="dashboard-container" style="display: none;">
+        <div class="last-attempt" id="last-attempt-display"></div>
+        <h3>Top 5 Personal Bests</h3>
+        <div id="high-scores-list"></div>
+    </div>
 </div>
 
 <div class="quiz-container" id="quiz-box">
@@ -188,7 +250,7 @@
 <script>
     const originalQuizData = [
         { q: "Para bulmak zorundayız yoksa o arabayı satın alamayız", options: ["We have to find money, otherwise we can't buy that car.", "We must to find money, otherwise we can't buy that car.", "We have to find money, unless we can't buy that car."], answer: 0 },
-        { q: "Parası yoktu ama tatile gidebiliyordu", options: ["He didn't have money, but he could enter the concert.", "He hadn't money, but he could enter the concert.", "He didn't have money, but he could enter the concert."], answer: 0 },
+        { q: "Parası yoktu ama tatile gidebiliyordu", options: ["He didn't have money, but he could go on a holiday.", "He hadn't money, but he could go on a holiday.", "He didn't have money, but he was able to go on a holiday."], answer: 0 },
         { q: "Para biriktirmelisin ve yeni bir araba satın almalısın", options: ["You have to save money and you have to buy a new car.", "You have to save money and you must to buy a new car.", "You should saving money and you have to buy a new car."], answer: 0 },
         { q: "Dosyada hata vardı bu yüzden dosyayı açamadık", options: ["There was an error in the file, so we couldn't open the file.", "There was an error in the file, so we didn't can open the file.", "It was an error in the file, so we couldn't open the file."], answer: 0 },
         { q: "Yeni dosyayı yazacağım ve sana yollayacağım", options: ["I will write the new file and I will send it to you.", "I am write the new file and I will send it to you.", "I will write the new file and I send to you."], answer: 0 },
@@ -270,7 +332,63 @@
     const scoreText = document.getElementById("score-text");
     const tallyCorrectDisplay = document.getElementById("tally-correct-display");
     const tallyIncorrectDisplay = document.getElementById("tally-incorrect-display");
+    const dashboardContainer = document.getElementById("dashboard-container");
+    const lastAttemptDisplay = document.getElementById("last-attempt-display");
+    const highScoresList = document.getElementById("high-scores-list");
 
+    // --- DASHBOARD LOGIC ---
+    function loadScoresDisplay() {
+        const lastAttempt = JSON.parse(localStorage.getItem('grammarQuizLastAttempt'));
+        const highScores = JSON.parse(localStorage.getItem('grammarQuizHighScores')) || [];
+
+        if (!lastAttempt && highScores.length === 0) {
+            dashboardContainer.style.display = 'none';
+            return;
+        }
+
+        dashboardContainer.style.display = 'block';
+
+        if (lastAttempt) {
+            lastAttemptDisplay.textContent = `Last Attempt: ${lastAttempt.score} / ${originalQuizData.length}`;
+        } else {
+            lastAttemptDisplay.textContent = "";
+        }
+
+        highScoresList.innerHTML = "";
+        if (highScores.length > 0) {
+            highScores.forEach((entry, index) => {
+                const row = document.createElement('div');
+                row.className = 'score-row';
+                row.innerHTML = `<span>#${index + 1}</span> <span>${entry.score} pts</span> <span>${entry.date}</span>`;
+                highScoresList.appendChild(row);
+            });
+        } else {
+            highScoresList.innerHTML = "<div class='score-row'>No high scores yet!</div>";
+        }
+    }
+
+    function saveFinalScore(finalScore) {
+        const today = new Date().toLocaleDateString();
+        
+        // Save Last Attempt
+        localStorage.setItem('grammarQuizLastAttempt', JSON.stringify({ score: finalScore, date: today }));
+
+        // Save High Scores
+        let highScores = JSON.parse(localStorage.getItem('grammarQuizHighScores')) || [];
+        highScores.push({ score: finalScore, date: today });
+        
+        // Sort descending
+        highScores.sort((a, b) => b.score - a.score);
+        
+        // Keep top 5
+        highScores = highScores.slice(0, 5);
+        localStorage.setItem('grammarQuizHighScores', JSON.stringify(highScores));
+    }
+
+    // Initialize Dashboard on load
+    loadScoresDisplay();
+
+    // --- QUIZ LOGIC ---
     function shuffleArray(array) {
         let shuffled = [...array];
         for (let i = shuffled.length - 1; i > 0; i--) {
@@ -284,6 +402,7 @@
         quizBox.style.display = 'none';
         resultBox.style.display = 'none';
         welcomeScreen.style.display = 'flex';
+        loadScoresDisplay();
     }
 
     function updateTallyDisplay() {
@@ -292,12 +411,7 @@
     }
 
     function saveProgress() {
-        const state = {
-            currentQuestionIndex,
-            score,
-            incorrectCount,
-            currentQuizData
-        };
+        const state = { currentQuestionIndex, score, incorrectCount, currentQuizData };
         localStorage.setItem('grammarQuizState', JSON.stringify(state));
     }
 
@@ -392,6 +506,8 @@
 
     function showResults() {
         clearProgress();
+        saveFinalScore(score);
+        loadScoresDisplay();
         quizBox.style.display = "none";
         resultBox.style.display = "block";
         scoreText.textContent = `Skorun: ${score} / ${currentQuizData.length}`;
