@@ -33,8 +33,8 @@
         }
 
         .logo-container {
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             overflow: hidden;
             display: flex;
@@ -54,12 +54,21 @@
 
         .logo-img { width: 100%; height: 100%; object-fit: cover; }
 
+        .test-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 250px;
+            margin-bottom: 25px;
+        }
+
         .start-btn-main {
             background-color: #1F7A5D;
             color: #ffffff;
             border: 2px solid #ffffff;
-            padding: 15px 40px;
-            font-size: 1.5rem;
+            padding: 12px 20px;
+            font-size: 1.2rem;
             font-weight: 800;
             border-radius: 50px;
             cursor: pointer;
@@ -67,7 +76,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin-bottom: 25px;
+            width: 100%;
         }
 
         .start-btn-main:hover {
@@ -118,10 +127,7 @@
             border-radius: 4px;
         }
 
-        .score-row span:nth-child(2) {
-            font-weight: bold;
-            color: #ffffff;
-        }
+        .score-row span:nth-child(2) { font-weight: bold; color: #ffffff; }
 
         /* --- QUIZ CONTAINER STYLES --- */
         .quiz-container {
@@ -215,7 +221,12 @@
     <div class="logo-container">
         <img src="logo.png" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found';">
     </div>
-    <button class="start-btn-main" onclick="startQuiz()">START QUIZ</button>
+    
+    <div class="test-btn-group">
+        <button class="start-btn-main" onclick="startQuiz(1)">TEST 1</button>
+        <button class="start-btn-main" onclick="startQuiz(2)">TEST 2</button>
+        <button class="start-btn-main" onclick="startQuiz(3)">TEST 3</button>
+    </div>
     
     <div class="dashboard-container" id="dashboard-container" style="display: none;">
         <div class="last-attempt" id="last-attempt-display"></div>
@@ -235,16 +246,16 @@
             <span class="tally-incorrect" id="tally-incorrect-display">0 Incorrect</span>
         </div>
     </div>
-    <div class="progress" id="progress-text">Question 1 of 66</div>
+    <div class="progress" id="progress-text">Question 1 of 22</div>
     <h2 id="question-text">Loading...</h2>
     <div class="options" id="options-container" translate="no"></div>
     <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question</button>
 </div>
 
 <div class="quiz-container" id="result-box" style="display:none;">
-    <h1>Quiz Completed!</h1>
+    <h1>Test Completed!</h1>
     <h2 id="score-text"></h2>
-    <button class="next-btn" style="display: block;" onclick="restartQuizSession()">Start Fresh</button>
+    <button class="next-btn" style="display: block;" onclick="returnToHome()">Return to Menu</button>
 </div>
 
 <script>
@@ -321,6 +332,7 @@
     let currentQuestionIndex = 0;
     let score = 0;
     let incorrectCount = 0;
+    let activeTestId = 1;
 
     const welcomeScreen = document.getElementById("welcome-screen");
     const quizBox = document.getElementById("quiz-box");
@@ -349,7 +361,7 @@
         dashboardContainer.style.display = 'block';
 
         if (lastAttempt) {
-            lastAttemptDisplay.textContent = `Last Attempt: ${lastAttempt.score} / ${originalQuizData.length}`;
+            lastAttemptDisplay.textContent = `Last Attempt (Test ${lastAttempt.test}): ${lastAttempt.score} / 22`;
         } else {
             lastAttemptDisplay.textContent = "";
         }
@@ -359,7 +371,7 @@
             highScores.forEach((entry, index) => {
                 const row = document.createElement('div');
                 row.className = 'score-row';
-                row.innerHTML = `<span>#${index + 1}</span> <span>${entry.score} pts</span> <span>${entry.date}</span>`;
+                row.innerHTML = `<span>T${entry.test}</span> <span>${entry.score} pts</span> <span>${entry.date}</span>`;
                 highScoresList.appendChild(row);
             });
         } else {
@@ -367,25 +379,19 @@
         }
     }
 
-    function saveFinalScore(finalScore) {
+    function saveFinalScore(finalScore, testId) {
         const today = new Date().toLocaleDateString();
         
-        // Save Last Attempt
-        localStorage.setItem('grammarQuizLastAttempt', JSON.stringify({ score: finalScore, date: today }));
+        localStorage.setItem('grammarQuizLastAttempt', JSON.stringify({ score: finalScore, test: testId, date: today }));
 
-        // Save High Scores
         let highScores = JSON.parse(localStorage.getItem('grammarQuizHighScores')) || [];
-        highScores.push({ score: finalScore, date: today });
+        highScores.push({ score: finalScore, test: testId, date: today });
         
-        // Sort descending
         highScores.sort((a, b) => b.score - a.score);
-        
-        // Keep top 5
         highScores = highScores.slice(0, 5);
         localStorage.setItem('grammarQuizHighScores', JSON.stringify(highScores));
     }
 
-    // Initialize Dashboard on load
     loadScoresDisplay();
 
     // --- QUIZ LOGIC ---
@@ -412,11 +418,11 @@
 
     function saveProgress() {
         const state = { currentQuestionIndex, score, incorrectCount, currentQuizData };
-        localStorage.setItem('grammarQuizState', JSON.stringify(state));
+        localStorage.setItem(`grammarQuizState_${activeTestId}`, JSON.stringify(state));
     }
 
     function loadProgress() {
-        const saved = localStorage.getItem('grammarQuizState');
+        const saved = localStorage.getItem(`grammarQuizState_${activeTestId}`);
         if (saved) {
             const state = JSON.parse(saved);
             currentQuestionIndex = state.currentQuestionIndex;
@@ -429,25 +435,33 @@
     }
 
     function clearProgress() {
-        localStorage.removeItem('grammarQuizState');
+        localStorage.removeItem(`grammarQuizState_${activeTestId}`);
     }
 
     function restartQuizSession() {
         if(confirm("Bu, ilerlemeni temizleyecek ve quizi baştan başlatacak. Emin misin?")) {
             clearProgress();
-            startQuiz(true);
+            startQuiz(activeTestId, true);
         }
     }
 
-    function startQuiz(forceFresh = false) {
+    function startQuiz(testId, forceFresh = false) {
+        activeTestId = testId;
         let hasSaved = false;
+        
         if (!forceFresh) { hasSaved = loadProgress(); }
 
         if (!hasSaved) {
             score = 0;
             incorrectCount = 0;
             currentQuestionIndex = 0;
-            currentQuizData = shuffleArray(originalQuizData);
+            
+            // Slice the array based on the test selected
+            const startIndex = (testId - 1) * 22;
+            const endIndex = startIndex + 22;
+            const slicedData = originalQuizData.slice(startIndex, endIndex);
+            
+            currentQuizData = shuffleArray(slicedData);
         }
 
         updateTallyDisplay();
@@ -461,7 +475,7 @@
         nextBtn.style.display = "none";
         optionsContainer.innerHTML = "";
         const currentData = currentQuizData[currentQuestionIndex];
-        progressText.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuizData.length}`;
+        progressText.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuizData.length} (Test ${activeTestId})`;
         questionText.textContent = currentData.q;
 
         const correctAnswerText = currentData.options[currentData.answer];
@@ -506,7 +520,7 @@
 
     function showResults() {
         clearProgress();
-        saveFinalScore(score);
+        saveFinalScore(score, activeTestId);
         loadScoresDisplay();
         quizBox.style.display = "none";
         resultBox.style.display = "block";
