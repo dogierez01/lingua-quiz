@@ -1,1 +1,464 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .quiz-container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            text-align: center;
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+        .progress {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        button.option-btn {
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            color: #2c3e50;
+        }
+        button.option-btn:hover:not(:disabled) {
+            background-color: #e0e6ed;
+            border-color: #95a5a6;
+        }
+        button.option-btn:disabled {
+            cursor: not-allowed;
+        }
+        /* Color states requested by you */
+        button.option-btn.correct {
+            background-color: #2ecc71 !important; /* Green */
+            border-color: #27ae60 !important;
+            color: white !important;
+        }
+        button.option-btn.incorrect {
+            background-color: #e74c3c !important; /* Red */
+            border-color: #c0392b !important;
+            color: white !important;
+        }
+        button.option-btn.missed-correct {
+            background-color: #3498db !important; /* Blue */
+            border-color: #2980b9 !important;
+            color: white !important;
+        }
+        .next-btn {
+            margin-top: 25px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            width: 100%;
+        }
+        .next-btn:hover {
+            background-color: #2c3e50;
+        }
+        .result-screen {
+            display: none;
+        }
+        .result-screen h1 {
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container" id="quiz-box">
+    <div class="progress" id="progress-text">Question 1 of 30</div>
+    <h2 id="question-text">Loading question...</h2>
+    <div class="options" id="options-container">
+        </div>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question</button>
+</div>
+
+<div class="quiz-container result-screen" id="result-box">
+    <h1>Quiz Completed!</h1>
+    <h2 id="score-text">You scored X out of Y</h2>
+    <button class="next-btn" style="display: block;" onclick="location.reload()">Restart Quiz</button>
+</div>
+
+<script>
+    // The dataset of 30 questions with tricky grammar distractors
+    const quizData = [
+        {
+            q: "Para bulmak zorundayız yoksa o arabayı satın alamayız",
+            options: [
+                "We have to find money, otherwise we can't buy that car.",
+                "We must to find money, otherwise we can't buy that car.",
+                "We have to find money, unless we can't buy that car."
+            ],
+            answer: 0
+        },
+        {
+            q: "Oteldeki gürültüden dolayı odamı değiştirmek zorunda kaldım",
+            options: [
+                "I had to change my room because of the noise is in the hotel.",
+                "I had to change my room due to there was noise in the hotel.",
+                "I had to change my room due to the noise in the hotel."
+            ],
+            answer: 2
+        },
+        {
+            q: "Odadaki kokuya rağmen o odayı değiştirmediler",
+            options: [
+                "They didn't change that room despite the smell in the room.",
+                "They didn't change that room although the smell in the room.",
+                "They didn't change that room in spite of they smelled the room."
+            ],
+            answer: 0
+        },
+        {
+            q: "Annem soya sosu kullanarak tavuk kızartırdı",
+            options: [
+                "My mother was used to fry chicken by using soy sauce.",
+                "My mother used to fry chicken to use soy sauce.",
+                "My mother used to fry chicken by using soy sauce."
+            ],
+            answer: 2
+        },
+        {
+            q: "Pasaportumu kaybettiğimden dolayı Konsolosluğu aramak zorunda kaldım",
+            options: [
+                "I had to call the Consulate due to I lost my passport.",
+                "I had to call the Consulate because I lost my passport.",
+                "I had to call the Consulate because of I lost my passport."
+            ],
+            answer: 1
+        },
+        {
+            q: "Anahtarımı takside unutana kadar anahtarımı kaybetmemiştim",
+            options: [
+                "I didn't lose my key until I had forgotten my key in the taxi.",
+                "I hadn't lost my key until I forgot my key in the taxi.",
+                "I haven't lost my key until I forgot my key in the taxi."
+            ],
+            answer: 1
+        },
+        {
+            q: "Yedek anahtarım olmasına rağmen kapıyı açamıyordum",
+            options: [
+                "I couldn't open the door although I had a spare key.",
+                "I couldn't open the door despite I had a spare key.",
+                "I couldn't open the door although having a spare key."
+            ],
+            answer: 0
+        },
+        {
+            q: "Şımarık bir şekilde herkese yeni arabasını gösteriyordu",
+            options: [
+                "He was showing his new car to everyone in a spoiled way.",
+                "He was showing his new car to everyone by a spoiled way.",
+                "He has been showing his new car to everyone in a spoiled way."
+            ],
+            answer: 0
+        },
+        {
+            q: "Hatasını düzelsin diye onu uyarmıştım",
+            options: [
+                "I had warned him for to fix his mistake.",
+                "I had warned him so as to he could fix his mistake.",
+                "I had warned him so that he could fix his mistake."
+            ],
+            answer: 2
+        },
+        {
+            q: "Kuzenim kışın hastalanırdı",
+            options: [
+                "My cousin used to got ill in the winter.",
+                "My cousin used to get ill in the winter.",
+                "My cousin was getting ill in the winter."
+            ],
+            answer: 1
+        },
+        {
+            q: "Erken uyanmak zorundayız yoksa treni yakalayamayız",
+            options: [
+                "We must to wake up early, otherwise we can't catch the train.",
+                "We have to wake up early, otherwise we can't catch the train.",
+                "We have to wake up early, otherwise we couldn't catch the train."
+            ],
+            answer: 1
+        },
+        {
+            q: "Şehirdeki sisten dolayı uçuşumu iptal etmek zorunda kaldım",
+            options: [
+                "I had to cancel my flight due to the fog in the city.",
+                "I had to cancel my flight because the fog in the city.",
+                "I had to cancel my flight due to there was fog in the city."
+            ],
+            answer: 0
+        },
+        {
+            q: "Çiftlikte yaşadığımda bahçede kitap okurdum",
+            options: [
+                "I was used to read a book in the garden when I lived at the farm.",
+                "I used to reading a book in the garden when I lived at the farm.",
+                "I used to read a book in the garden when I lived at the farm."
+            ],
+            answer: 2
+        },
+        {
+            q: "Motorumu bozduğumdan dolayı tamirciyi aramak zorunda kaldım",
+            options: [
+                "I had to call the mechanic because I broke my engine.",
+                "I had to call the mechanic due to I broke my engine.",
+                "I had to call the mechanic because of I broke my engine."
+            ],
+            answer: 0
+        },
+        {
+            q: "Gururlu bir şekilde herkese yeni projesini açıklıyordu",
+            options: [
+                "He was explaining his new project to everyone by a proud way.",
+                "He was explaining his new project to everyone in a proud way.",
+                "He was explaining his new project to everyone with a proud way."
+            ],
+            answer: 1
+        },
+        {
+            q: "Mutfaktaki dağınıklığa rağmen o masayı temizlemediler",
+            options: [
+                "They didn't clean that table although the mess in the kitchen.",
+                "They didn't clean that table in spite the mess in the kitchen.",
+                "They didn't clean that table despite the mess in the kitchen."
+            ],
+            answer: 2
+        },
+        {
+            q: "Uçuşunu yakalasın diye onu aramıştım",
+            options: [
+                "I had called him so that he could catch his flight.",
+                "I had called him for he could catch his flight.",
+                "I had called him so as to he catch his flight."
+            ],
+            answer: 0
+        },
+        {
+            q: "Sözlüğüm olmasına rağmen metni okuyamıyordum",
+            options: [
+                "I couldn't read the text despite I had a dictionary.",
+                "I couldn't read the text although I had a dictionary.",
+                "I couldn't read the text although having a dictionary."
+            ],
+            answer: 1
+        },
+        {
+            q: "Babam eski parçalar kullanarak arabaları tamir ederdi",
+            options: [
+                "My father used to fix cars by using old parts.",
+                "My father used to fix cars with using old parts.",
+                "My father was used to fix cars by using old parts."
+            ],
+            answer: 0
+        },
+        {
+            q: "Toplantıda herkes sinirleniyordu",
+            options: [
+                "Everyone was getting angry in the meeting.",
+                "Everyone were getting angry in the meeting.",
+                "Everyone got angry in the meeting."
+            ],
+            answer: 0
+        },
+        {
+            q: "Vizemizi almak zorundayız yoksa o ülkeye giremeyiz",
+            options: [
+                "We must get our visa, otherwise we don't enter that country.",
+                "We have to get our visa, otherwise we can't enter that country.",
+                "We have to get our visa, otherwise we couldn't enter that country."
+            ],
+            answer: 1
+        },
+        {
+            q: "Şehirdeki pahalılıktan dolayı planımı değiştirmek zorunda kaldım",
+            options: [
+                "I had to change my plan due to the high prices in the city.",
+                "I had to change my plan because the high prices in the city.",
+                "I had to change my plan due to there were high prices in the city."
+            ],
+            answer: 0
+        },
+        {
+            q: "Yurtdışına çıktığımda haritayı çantama koyardım",
+            options: [
+                "I used to put the map in my bag when I went abroad.",
+                "I was putting the map in my bag when I went abroad.",
+                "I used to putting the map in my bag when I went abroad."
+            ],
+            answer: 0
+        },
+        {
+            q: "Biletimi unuttuğumdan dolayı gişeye gitmek zorunda kaldım",
+            options: [
+                "I had to go to the ticket office due to I forgot my ticket.",
+                "I had to go to the ticket office because of I forgot my ticket.",
+                "I had to go to the ticket office because I forgot my ticket."
+            ],
+            answer: 2
+        },
+        {
+            q: "Heyecanlı bir şekilde arkadaşlarına tatilini anlatıyordu",
+            options: [
+                "She was explaining her holiday to her friends in an excited way.",
+                "She was explaining her holiday to her friends by an excited way.",
+                "She explained her holiday to her friends in an excited way."
+            ],
+            answer: 0
+        },
+        {
+            q: "Kötü havaya rağmen o maçı iptal etmediler",
+            options: [
+                "They didn't cancel that match although the bad weather.",
+                "They didn't cancel that match despite the bad weather.",
+                "They didn't cancel that match despite of the bad weather."
+            ],
+            answer: 1
+        },
+        {
+            q: "Otobüsü yakalasın diye onu uyandırmıştım",
+            options: [
+                "I had woken him up so that he could catch the bus.",
+                "I had woken him up for to catch the bus.",
+                "I had woken him up so as he can catch the bus."
+            ],
+            answer: 0
+        },
+        {
+            q: "Haritam olmasına rağmen adresi bulamıyordum",
+            options: [
+                "I couldn't find the address despite I had a map.",
+                "I couldn't find the address although I had a map.",
+                "I couldn't find the address although having a map."
+            ],
+            answer: 1
+        },
+        {
+            q: "Öğrencilerim sözlük kullanarak metinleri çevirirdi",
+            options: [
+                "My students used to translate the texts with using a dictionary.",
+                "My students were used to translate the texts by using a dictionary.",
+                "My students used to translate the texts by using a dictionary."
+            ],
+            answer: 2
+        },
+        {
+            q: "Cüzdanımı trende düşürene kadar cüzdanımı kaybetmemiştim",
+            options: [
+                "I didn't lose my wallet until I had dropped my wallet on the train.",
+                "I hadn't lost my wallet until I dropped my wallet on the train.",
+                "I haven't lost my wallet until I dropped my wallet on the train."
+            ],
+            answer: 1
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionText = document.getElementById("question-text");
+    const optionsContainer = document.getElementById("options-container");
+    const nextBtn = document.getElementById("next-btn");
+    const progressText = document.getElementById("progress-text");
+    const quizBox = document.getElementById("quiz-box");
+    const resultBox = document.getElementById("result-box");
+    const scoreText = document.getElementById("score-text");
+
+    function loadQuestion() {
+        // Reset state
+        nextBtn.style.display = "none";
+        optionsContainer.innerHTML = "";
+        
+        const currentData = quizData[currentQuestionIndex];
+        questionText.textContent = currentData.q;
+        progressText.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+
+        currentData.options.forEach((option, index) => {
+            const button = document.createElement("button");
+            button.className = "option-btn";
+            button.id = "btn-" + index;
+            button.textContent = option;
+            button.onclick = () => selectAnswer(index, currentData.answer, button);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function selectAnswer(selectedIndex, correctIndex, selectedButton) {
+        // Disable all buttons so student can't click again
+        const allButtons = document.querySelectorAll(".option-btn");
+        allButtons.forEach(btn => btn.disabled = true);
+
+        if (selectedIndex === correctIndex) {
+            // Correct answer: Turns Green
+            selectedButton.classList.add("correct");
+            score++;
+        } else {
+            // Incorrect answer: Turns Red
+            selectedButton.classList.add("incorrect");
+            // Highlight correct answer: Turns Blue
+            document.getElementById("btn-" + correctIndex).classList.add("missed-correct");
+        }
+
+        // Show Next button
+        nextBtn.style.display = "block";
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        quizBox.style.display = "none";
+        resultBox.style.display = "block";
+        scoreText.textContent = `You scored ${score} out of ${quizData.length}!`;
+    }
+
+    // Initialize Quiz
+    loadQuestion();
+</script>
+
+</body>
+</html>
