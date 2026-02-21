@@ -217,13 +217,13 @@
 
 <div class="app-screen active-screen" id="splash-screen">
     <div class="logo-container">
-        <img src="logo.png?v=2" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found';">
+        <img src="logo.png?v=3" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found';">
     </div>
     <button class="start-btn-main" onclick="showInstructions()">ENTER</button>
 </div>
 
 <div class="app-screen" id="instructions-screen">
-    <img src="guide.png?v=2" alt="Instructions" class="instructions-img" onerror="this.onerror=null; this.alt='Image not found. Check filename!'; this.style.color='white';">
+    <img src="guide.png?v=3" alt="Instructions" class="instructions-img" onerror="this.onerror=null; this.alt='Image not found. Check filename!'; this.style.color='white';">
     <button class="start-btn-main" onclick="showMainMenu()">CONTINUE</button>
 </div>
 
@@ -287,11 +287,11 @@
 </div>
 
 <script>
-    // --- 66 SENTENCES DATA ---
+    // --- CORRECTED 66 SENTENCES DATA ---
     const originalQuizData = [
         { q: "Para bulmak zorundayız yoksa o arabayı satın alamayız", options: ["We have to find money, otherwise we can't buy that car.", "We must to find money, otherwise we can't buy that car.", "We have to find money, unless we can't buy that car."], answer: 0 },
         { q: "Parası yoktu ama tatile gidebiliyordu", options: ["He didn't have money, but he could go on a holiday.", "He hadn't money, but he could go on a holiday.", "He didn't have money, but he was able to go on a holiday."], answer: 0 },
-        { q: "Para biriktirmelisin ve yeni bir araba satın almalısın", options: ["You have to save money and you have to buy a new car.", "You have to save money and you must to buy a new car.", "You should saving money and you have to buy a new car."], answer: 0 },
+        { q: "Para biriktirmelisin ve yeni bir araba satın almalısın", options: ["You should save money and you should buy a new car.", "You have to save money and you must to buy a new car.", "You should saving money and you should buy a new car."], answer: 0 },
         { q: "Dosyada hata vardı bu yüzden dosyayı açamadık", options: ["There was an error in the file, so we couldn't open the file.", "There was an error in the file, so we didn't can open the file.", "It was an error in the file, so we couldn't open the file."], answer: 0 },
         { q: "Yeni dosyayı yazacağım ve sana yollayacağım", options: ["I will write the new file and I will send it to you.", "I am write the new file and I will send it to you.", "I will write the new file and I send to you."], answer: 0 },
         { q: "Köpeğimi yorgundu Bu yüzden onunla top oynayamadık", options: ["My dog was tired, so we couldn't play ball with him.", "My dog was tired, because we couldn't play ball with him.", "My dog was tired, so we haven't play ball with him."], answer: 0 },
@@ -313,7 +313,7 @@
         { q: "Kuzenim kışın hastalanırdı", options: ["My cousin used to get ill in the winter.", "My cousin used to got ill in the winter.", "My cousin was used to get ill in the winter."], answer: 0 },
         { q: "Erken uyanmak zorundayız yoksa treni yakalayamayız", options: ["We have to wake up early, otherwise we can't catch the train.", "We have to wake up early, unless we can't catch the train.", "We must to wake up early, otherwise we can't catch the train."], answer: 0 },
         { q: "Bileti yoktu ama konsere girebiliyordu", options: ["He didn't have a ticket, but he could enter the concert.", "He hadn't a ticket, but he was able to enter the concert.", "He didn't have a ticket, but he could to enter the concert."], answer: 0 },
-        { q: "Çok çalışmalısın ve bu sınavı geçmelisin", options: ["You have to study hard and you have to pass this exam.", "You have to study hard and you must to pass this exam.", "You have study hard and you have to pass this exam."], answer: 0 },
+        { q: "Çok çalışmalısın ve bu sınavı geçmelisin", options: ["You should study hard and you should pass this exam.", "You have to study hard and you must to pass this exam.", "You should studying hard and you should pass this exam."], answer: 0 },
         { q: "Şehirde fırtına vardı bu yüzden evden çıkamadık", options: ["There was a storm in the city, so we couldn't leave the house.", "It was a storm in the city, so we couldn't leave the house.", "There was a storm in the city, because we couldn't leave the house."], answer: 0 },
         { q: "Yemeği hazırlayacağım ve sana getireceğim", options: ["I will prepare the meal and I will bring it to you.", "I am prepare the meal and I will bring it to you.", "I will prepare the meal and I bring it to you."], answer: 0 },
         { q: "Kardeşim meşguldü bu yüzden onunla film izleyemedik", options: ["My brother was busy, so we couldn't watch a movie with him.", "My brother was busy, so we didn't can watch a movie with him.", "My brother was busy, otherwise we couldn't watch a movie with him."], answer: 0 },
@@ -333,9 +333,9 @@
         { q: "Uçuşunu yakalasın diye onu aramıştım", options: ["I had called him so that he could catch his flight.", "I had called him for he could catch his flight.", "I had called him so as to he could catch his flight."], answer: 0 },
         { q: "Toplantıda herkes sinirleniyordu", options: ["Everybody was getting angry in the meeting.", "Everyone were getting angry in the meeting.", "Everyone was get angry in the meeting."], answer: 0 },
         { q: "Büyükbabam yazın yorulurdu", options: ["My grandfather used to get tired in the summer.", "My grandfather used to got tired in the summer.", "My grandfather was used to get tired in the summer."], answer: 0 },
-        { q: "Vizemizi almak zorundayız yoksa o ülkeye giremeyiz", options: ["We have to get our visa, otherwise we can enter that country.", "We must to get our visa, otherwise we can't enter that country.", "We have to get our visa, unless we can't enter that country."], answer: 0 },
+        { q: "Vizemizi almak zorundayız yoksa o ülkeye giremeyiz", options: ["We have to get our visa, otherwise we can't enter that country.", "We must to get our visa, otherwise we can't enter that country.", "We have to get our visa, unless we can't enter that country."], answer: 0 },
         { q: "Zamanı yoktu ama ödevini bitirebiliyordu", options: ["She didn't have time, but she could finish her homework.", "She hadn't time, but she was able to finish her homework.", "She didn't have time, but she could to finish her homework."], answer: 0 },
-        { q: "Kelimeleri öğrenmelisin ve o sınava girmelisin", options: ["You have to learn the words and you have to take that exam.", "You have to learn the words and you must to take that exam.", "You have learn the words and you have to take that exam."], answer: 0 },
+        { q: "Kelimeleri öğrenmelisin ve o sınavı geçmelisin", options: ["You should learn the words and you should pass the exam.", "You have to learn the words and you must to pass the exam.", "You should learning the words and you should pass the exam."], answer: 0 },
         { q: "Yolda trafik vardı bu yüzden havaalanına ulaşamadık", options: ["There was traffic on the road, so we couldn't reach the airport.", "It was traffic on the road, so we couldn't reach the airport.", "There was traffic on the road, because we couldn't reach the airport."], answer: 0 },
         { q: "Odayı temizleyeceğim ve sana haber vereceğim", options: ["I will clean the room and I will let you know.", "I am clean the room and I will let you know.", "I will clean the room and I let you know."], answer: 0 },
         { q: "Öğretmenim hastaydı bu yüzden ona soru soramadık", options: ["My teacher was ill, so we couldn't ask him a question.", "My teacher was ill, so we didn't can ask him a question.", "My teacher was ill, otherwise we couldn't ask him a question."], answer: 0 },
@@ -531,7 +531,7 @@
 
 
     // ==========================================
-    // VOICE CHALLENGE LOGIC (NEW SAFE ROOM)
+    // VOICE CHALLENGE LOGIC 
     // ==========================================
     let voiceData = [];
     let vIndex = 0;
@@ -545,7 +545,7 @@
     
     if (SpeechRecognition) {
         recognition = new SpeechRecognition();
-        recognition.lang = 'en-US'; // Expecting English speech
+        recognition.lang = 'en-US'; 
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
 
@@ -569,7 +569,6 @@
         }
         vScore = 0; vIndex = 0;
         document.getElementById('v-score').textContent = vScore;
-        // Shuffle ALL 66 questions for the voice challenge
         voiceData = shuffleArray(originalQuizData);
         switchScreen('voice');
         loadVoiceCard();
@@ -584,7 +583,7 @@
         
         const enTextEl = document.getElementById('v-en-text');
         enTextEl.style.display = "none";
-        enTextEl.className = "en-text"; // Reset colors
+        enTextEl.className = "en-text"; 
         
         const feedbackEl = document.getElementById('v-feedback');
         feedbackEl.textContent = "Tap the mic and speak!";
@@ -608,17 +607,59 @@
         document.getElementById('mic-btn').classList.remove('mic-pulsing');
     }
 
-    // THE FORGIVING AI: Strips all punctuation and spaces for fair comparison
-    function cleanText(str) {
-        return str.toLowerCase().replace(/[.,?!'’"‑-]/g, "").replace(/\s+/g, " ").trim();
+    // --- THE LENIENCY ENGINE ---
+    function normalizeText(str) {
+        let s = str.toLowerCase();
+
+        // 1. Expand Contractions (So "didn't" and "did not" match perfectly)
+        const contractions = {
+            "i'll": "i will", "you'll": "you will", "he'll": "he will", "she'll": "she will", "we'll": "we will", "they'll": "they will",
+            "i'm": "i am", "you're": "you are", "we're": "we are", "they're": "they are",
+            "didn't": "did not", "hadn't": "had not", "couldn't": "could not", "can't": "cannot",
+            "don't": "do not", "doesn't": "does not", "isn't": "is not", "aren't": "are not",
+            "wasn't": "was not", "weren't": "were not", "haven't": "have not", "hasn't": "has not",
+            "won't": "will not", "wouldn't": "would not"
+        };
+        for (let key in contractions) {
+            s = s.replace(new RegExp("\\b" + key + "\\b", "g"), contractions[key]);
+        }
+
+        // 2. Remove all punctuation
+        s = s.replace(/[.,?!'’"‑-]/g, "");
+
+        // 3. Synonym Leniency Mapping
+        const synonyms = {
+            "mistake": "error",
+            "everyone": "everybody",
+            "anyone": "anybody",
+            "no one": "nobody",
+            "sick": "ill",
+            "mad": "angry",
+            "vacation": "holiday",
+            "test": "exam",
+            "repair": "fix",
+            "cab": "taxi",
+            "can not": "cannot",
+            "must": "have to",
+            "need to": "have to",
+            "ought to": "should",
+            "complete": "finish"
+        };
+        for (let key in synonyms) {
+            s = s.replace(new RegExp("\\b" + key + "\\b", "g"), synonyms[key]);
+        }
+
+        // 4. Remove extra spaces
+        return s.replace(/\s+/g, " ").trim();
     }
 
     function checkVoiceAnswer(spokenText) {
         vAttempts++;
         const targetText = voiceData[vIndex].options[voiceData[vIndex].answer];
         
-        const cleanedSpoken = cleanText(spokenText);
-        const cleanedTarget = cleanText(targetText);
+        // Pass both through the Leniency Engine
+        const cleanedSpoken = normalizeText(spokenText);
+        const cleanedTarget = normalizeText(targetText);
         
         const feedbackEl = document.getElementById('v-feedback');
         const enTextEl = document.getElementById('v-en-text');
