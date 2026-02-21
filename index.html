@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <title>English Grammar Quiz</title>
     <style>
         /* --- BASE STYLES --- */
@@ -32,8 +33,8 @@
         }
 
         .logo-container {
-            width: 200px; /* Downsized */
-            height: 200px; /* Downsized */
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             overflow: hidden;
             display: flex;
@@ -51,26 +52,18 @@
         }
 
         @keyframes neon-pulse {
-            from {
-                box-shadow: 0 0 10px #00ffff, 0 0 30px #00b7ff, 0 0 60px #00b7ff, inset 0 0 20px #00ffff;
-            }
-            to {
-                 box-shadow: 0 0 15px #00ffff, 0 0 45px #00b7ff, 0 0 85px #00b7ff, inset 0 0 30px #00ffff;
-            }
+            from { box-shadow: 0 0 10px #00ffff, 0 0 30px #00b7ff, 0 0 60px #00b7ff, inset 0 0 20px #00ffff; }
+            to { box-shadow: 0 0 15px #00ffff, 0 0 45px #00b7ff, 0 0 85px #00b7ff, inset 0 0 30px #00ffff; }
         }
 
-        .logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .logo-img { width: 100%; height: 100%; object-fit: cover; }
 
         .start-btn-main {
             background-color: #1F7A5D;
             color: #ffffff;
             border: 2px solid #ffffff;
             padding: 15px 40px;
-            font-size: 1.5rem; /* Downsized by 30% */
+            font-size: 1.5rem;
             font-weight: 800;
             border-radius: 50px;
             cursor: pointer;
@@ -78,6 +71,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
         }
 
         .start-btn-main:hover {
@@ -95,7 +89,7 @@
             box-shadow: 0 8px 32px rgba(255,255,255,0.05);
             max-width: 900px;
             width: 100%;
-            padding: 20px; /* Downsized padding */
+            padding: 20px;
             text-align: center;
             animation: fadeIn 0.5s ease-in;
         }
@@ -114,24 +108,26 @@
             padding-bottom: 10px;
         }
 
-        .return-btn {
+        .btn-group { display: flex; gap: 8px; }
+
+        .return-btn, .restart-header-btn {
             background-color: transparent;
             color: #ffffff;
             border: 2px solid #555555;
-            padding: 6px 12px;
-            font-size: 0.7rem; /* Downsized by 30% */
+            padding: 6px 10px;
+            font-size: 0.7rem;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .return-btn:hover {
-            background-color: #333333;
-            border-color: #ffffff;
-        }
+        .restart-header-btn { border-color: #e74c3c; color: #e74c3c; }
+
+        .return-btn:hover { background-color: #333333; border-color: #ffffff; }
+        .restart-header-btn:hover { background-color: #e74c3c; color: white; }
 
         .tally {
-            font-size: 1.05rem; /* Downsized by 30% */
+            font-size: 1.05rem;
             font-weight: bold;
         }
 
@@ -140,13 +136,13 @@
 
         h2 {
             color: #ffffff;
-            font-size: 1.2rem; /* Downsized by 30% */
+            font-size: 1.2rem;
             margin-bottom: 20px;
             line-height: 1.4;
             min-height: 50px;
         }
         .progress {
-            font-size: 0.75rem; /* Downsized by 30% */
+            font-size: 0.75rem;
             color: #aaaaaa;
             margin-bottom: 20px;
             font-weight: bold;
@@ -154,73 +150,47 @@
         .options {
             display: flex;
             flex-direction: column;
-            gap: 10px; /* Tighter gap */
+            gap: 10px;
         }
         button.option-btn {
             background-color: #111111;
             border: 2px solid #ffffff;
             border-radius: 8px;
-            padding: 10px; /* Downsized padding */
-            font-size: 1.05rem; /* Downsized by 30% */
+            padding: 10px;
+            font-size: 1.05rem;
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: left;
             color: #ffffff;
             line-height: 1.3;
         }
-        button.option-btn:hover:not(:disabled) {
-            background-color: #333333;
-        }
-        button.option-btn:disabled {
-            cursor: not-allowed;
-        }
-        button.option-btn.correct {
-            background-color: #2ecc71 !important;
-            border-color: #27ae60 !important;
-            color: #ffffff !important;
-        }
-        button.option-btn.incorrect {
-            background-color: #e74c3c !important;
-            border-color: #c0392b !important;
-            color: #ffffff !important;
-        }
-        button.option-btn.missed-correct {
-            background-color: #3498db !important;
-            border-color: #2980b9 !important;
-            color: #ffffff !important;
-        }
+        button.option-btn:hover:not(:disabled) { background-color: #333333; }
+        button.option-btn:disabled { cursor: not-allowed; }
+        button.option-btn.correct { background-color: #2ecc71 !important; border-color: #27ae60 !important; color: #ffffff !important; }
+        button.option-btn.incorrect { background-color: #e74c3c !important; border-color: #c0392b !important; color: #ffffff !important; }
+        button.option-btn.missed-correct { background-color: #3498db !important; border-color: #2980b9 !important; color: #ffffff !important; }
+
         .next-btn {
             margin-top: 20px;
             background-color: #ffffff;
             color: #000000;
             border: none;
             padding: 10px 20px;
-            font-size: 1.05rem; /* Downsized by 30% */
+            font-size: 1.05rem;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
             display: none;
             width: 100%;
         }
-        .next-btn:hover {
-            background-color: #cccccc;
-        }
-        .result-screen {
-            display: none;
-        }
-        .result-screen h1 {
-            color: #2ecc71;
-            font-size: 1.9rem; /* Downsized by 30% */
-            margin-bottom: 15px;
-        }
-        #score-text {
-            font-size: 1.4rem; /* Downsized by 30% */
-        }
+        .next-btn:hover { background-color: #cccccc; }
+
+        .result-screen { display: none; }
+        .result-screen h1 { color: #2ecc71; font-size: 1.9rem; margin-bottom: 15px; }
+        #score-text { font-size: 1.4rem; }
     </style>
 </head>
-<body>
-
-<div class="welcome-screen" id="welcome-screen">
+<body class="notranslate"> <div class="welcome-screen" id="welcome-screen">
     <div class="logo-container">
         <img src="logo.png" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found. Check exact filename in repo!'; this.style.color='white';">
     </div>
@@ -229,7 +199,10 @@
 
 <div class="quiz-container" id="quiz-box">
     <div class="header-bar">
-        <button class="return-btn" onclick="returnToHome()">&#8592; Return</button>
+        <div class="btn-group">
+            <button class="return-btn" onclick="returnToHome()">&#8592; Return</button>
+            <button class="restart-header-btn" onclick="restartQuizSession()">Restart</button>
+        </div>
         <div class="tally">
             <span class="tally-correct" id="tally-correct-display">0 Correct</span>
             <span class="tally-incorrect" id="tally-incorrect-display">0 Incorrect</span>
@@ -238,7 +211,7 @@
     
     <div class="progress" id="progress-text">Question 1 of 66</div>
     <h2 id="question-text">Loading question...</h2>
-    <div class="options" id="options-container">
+    <div class="options" id="options-container" translate="no">
     </div>
     <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question</button>
 </div>
@@ -249,11 +222,10 @@
     </div>
     <h1>Quiz Completed!</h1>
     <h2 id="score-text">You scored X out of Y</h2>
-    <button class="next-btn" style="display: block;" onclick="startQuiz()">Restart Quiz</button>
+    <button class="next-btn" style="display: block;" onclick="restartQuizSession()">Start Fresh</button>
 </div>
 
 <script>
-    // Full dataset with 66 questions
     const originalQuizData = [
         { q: "Para bulmak zorundayız yoksa o arabayı satın alamayız", options: ["We have to find money, otherwise we can't buy that car.", "We must to find money, otherwise we can't buy that car.", "We have to find money, unless we can't buy that car."], answer: 0 },
         { q: "Parası yoktu ama tatile gidebiliyordu", options: ["He didn't have money, but he was able to go on a holiday.", "He hadn't money, but he was able to go on a holiday.", "He didn't have money, but he could to go on a holiday."], answer: 0 },
@@ -275,7 +247,7 @@
         { q: "Şımarık bir şekilde herkese yeni arabasını gösteriyordu", options: ["He was showing his new car to everyone in a spoiled way.", "He was showing his new car to everyone by a spoiled way.", "He was showing his new car to everyone with a spoiled way."], answer: 0 },
         { q: "Hatasını düzeltmek için hiçbir şey yapmadı", options: ["He did nothing to fix his mistake.", "He didn't nothing to fix his mistake.", "He did nothing for fix his mistake."], answer: 0 },
         { q: "Hatasını düzelsin diye onu uyarmıştım", options: ["I had warned him so that he could fix his mistake.", "I had warned him for he could fix his mistake.", "I had warned him so as to he could fix his mistake."], answer: 0 },
-        { q: "Amerika'da herkes şişmanlıyordu", options: ["Everyone was getting fat in America.", "Everyone were getting fat in America.", "Everyone was get fat in America."], answer: 0 },
+        { q: "Amerika'da everyone was getting fat", options: ["Everyone was getting fat in America.", "Everyone were getting fat in America.", "Everyone was get fat in America."], answer: 0 },
         { q: "Kuzenim kışın hastalanırdı", options: ["My cousin used to get ill in the winter.", "My cousin used to got ill in the winter.", "My cousin was used to get ill in the winter."], answer: 0 },
         { q: "Erken uyanmak zorundayız yoksa treni yakalayamayız", options: ["We have to wake up early, otherwise we can't catch the train.", "We have to wake up early, unless we can't catch the train.", "We must to wake up early, otherwise we can't catch the train."], answer: 0 },
         { q: "Bileti yoktu ama konsere girebiliyordu", options: ["He didn't have a ticket, but he was able to enter the concert.", "He hadn't a ticket, but he was able to enter the concert.", "He didn't have a ticket, but he could to enter the concert."], answer: 0 },
@@ -328,7 +300,6 @@
     let score = 0;
     let incorrectCount = 0;
 
-    // DOM Elements
     const welcomeScreen = document.getElementById("welcome-screen");
     const quizBox = document.getElementById("quiz-box");
     const resultBox = document.getElementById("result-box");
@@ -340,7 +311,6 @@
     const tallyCorrectDisplay = document.getElementById("tally-correct-display");
     const tallyIncorrectDisplay = document.getElementById("tally-incorrect-display");
 
-    // Fisher-Yates Shuffle Function
     function shuffleArray(array) {
         let shuffled = [...array];
         for (let i = shuffled.length - 1; i > 0; i--) {
@@ -361,14 +331,57 @@
         tallyIncorrectDisplay.textContent = `${incorrectCount} Incorrect`;
     }
 
-    function startQuiz() {
-        score = 0;
-        incorrectCount = 0;
-        currentQuestionIndex = 0;
+    // Save progress to LocalStorage
+    function saveProgress() {
+        const state = {
+            currentQuestionIndex,
+            score,
+            incorrectCount,
+            currentQuizData
+        };
+        localStorage.setItem('grammarQuizState', JSON.stringify(state));
+    }
+
+    // Load progress from LocalStorage
+    function loadProgress() {
+        const saved = localStorage.getItem('grammarQuizState');
+        if (saved) {
+            const state = JSON.parse(saved);
+            currentQuestionIndex = state.currentQuestionIndex;
+            score = state.score;
+            incorrectCount = state.incorrectCount;
+            currentQuizData = state.currentQuizData;
+            return true;
+        }
+        return false;
+    }
+
+    // Clear LocalStorage
+    function clearProgress() {
+        localStorage.removeItem('grammarQuizState');
+    }
+
+    function restartQuizSession() {
+        if(confirm("This will clear your progress and restart the quiz. Are you sure?")) {
+            clearProgress();
+            startQuiz(true); // Force fresh start
+        }
+    }
+
+    function startQuiz(forceFresh = false) {
+        let hasSaved = false;
+        if (!forceFresh) {
+            hasSaved = loadProgress();
+        }
+
+        if (!hasSaved) {
+            score = 0;
+            incorrectCount = 0;
+            currentQuestionIndex = 0;
+            currentQuizData = shuffleArray(originalQuizData);
+        }
+
         updateTallyDisplay();
-
-        currentQuizData = shuffleArray(originalQuizData);
-
         welcomeScreen.style.display = 'none';
         resultBox.style.display = 'none';
         quizBox.style.display = 'block';
@@ -392,12 +405,11 @@
             button.className = "option-btn";
             button.id = "btn-" + index;
             button.textContent = option;
-            
             const isCorrect = (option === correctAnswerText);
-            
             button.onclick = () => selectAnswer(isCorrect, index, shuffledOptions.indexOf(correctAnswerText), button);
             optionsContainer.appendChild(button);
         });
+        saveProgress();
     }
 
     function selectAnswer(isCorrect, selectedIndex, newCorrectIndex, selectedButton) {
@@ -414,6 +426,7 @@
         }
 
         updateTallyDisplay();
+        saveProgress();
         nextBtn.style.display = "block";
     }
 
@@ -427,6 +440,7 @@
     }
 
     function showResults() {
+        clearProgress(); // Quiz finished, clean up
         quizBox.style.display = "none";
         resultBox.style.display = "block";
         scoreText.textContent = `You scored ${score} out of ${currentQuizData.length}!`;
