@@ -119,7 +119,7 @@
             color: #ffffff;
             border: 2px solid #555555;
             padding: 10px 20px;
-            font-size: 1.2rem;
+            font-size: 1.4rem; /* Slightly larger return button */
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -131,22 +131,22 @@
         }
 
         .tally {
-            font-size: 1.5rem;
+            font-size: 2.2rem; /* Maximized Tally Font Size */
             font-weight: bold;
         }
 
-        .tally-correct { color: #2ecc71; margin-right: 15px; }
+        .tally-correct { color: #2ecc71; margin-right: 20px; }
         .tally-incorrect { color: #e74c3c; }
 
         h2 {
             color: #ffffff;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             margin-bottom: 30px;
             line-height: 1.4;
             min-height: 80px;
         }
         .progress {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             color: #aaaaaa;
             margin-bottom: 30px;
             font-weight: bold;
@@ -161,7 +161,7 @@
             border: 3px solid #ffffff;
             border-radius: 12px;
             padding: 25px;
-            font-size: 1.6rem;
+            font-size: 2.2rem; /* Maximized Answer Button Font Size */
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: left;
@@ -195,7 +195,7 @@
             color: #000000;
             border: none;
             padding: 20px 30px;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: bold;
             border-radius: 12px;
             cursor: pointer;
@@ -210,11 +210,11 @@
         }
         .result-screen h1 {
             color: #2ecc71;
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin-bottom: 20px;
         }
         #score-text {
-            font-size: 2.5rem;
+            font-size: 3rem;
         }
     </style>
 </head>
@@ -222,7 +222,7 @@
 
 <div class="welcome-screen" id="welcome-screen">
     <div class="logo-container">
-        <img src="logo.PNG" alt="Quiz Logo" class="logo-img">
+        <img src="logo.png" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found. Check exact filename in repo!'; this.style.color='white';">
     </div>
     <button class="start-btn-main" id="start-quiz-btn" onclick="startQuiz()">START QUIZ</button>
 </div>
@@ -299,7 +299,7 @@
         { q: "Uçuşunu yakalasın diye onu aramıştım", options: ["I had called him so that he could catch his flight.", "I had called him for he could catch his flight.", "I had called him so as to he could catch his flight."], answer: 0 },
         { q: "Toplantıda herkes sinirleniyordu", options: ["Everyone was getting angry in the meeting.", "Everyone were getting angry in the meeting.", "Everyone was get angry in the meeting."], answer: 0 },
         { q: "Büyükbabam yazın yorulurdu", options: ["My grandfather used to get tired in the summer.", "My grandfather used to got tired in the summer.", "My grandfather was used to get tired in the summer."], answer: 0 },
-        { q: "Vizemizi almak zorundayız yoksa o ülkeye giremeyiz", options: ["We have to get our visa, otherwise we can't enter that country.", "We must to get our visa, otherwise we can't enter that country.", "We have to get our visa, unless we can't enter that country."], answer: 0 },
+        { q: "Vizemizi almak zorundayız yoksa o ülkeye giremeyiz", options: ["We have to get our visa, otherwise we can can't enter that country.", "We must to get our visa, otherwise we can't enter that country.", "We have to get our visa, unless we can't enter that country."], answer: 0 },
         { q: "Zamanı yoktu ama ödevini bitirebiliyordu", options: ["She didn't have time, but she was able to finish her homework.", "She hadn't time, but she was able to finish her homework.", "She didn't have time, but she could to finish her homework."], answer: 0 },
         { q: "Kelimeleri öğrenmelisin ve o sınava girmelisin", options: ["You have to learn the words and you have to take that exam.", "You have to learn the words and you must to take that exam.", "You have learn the words and you have to take that exam."], answer: 0 },
         { q: "Yolda trafik vardı bu yüzden havaalanına ulaşamadık", options: ["There was traffic on the road, so we couldn't reach the airport.", "It was traffic on the road, so we couldn't reach the airport.", "There was traffic on the road, because we couldn't reach the airport."], answer: 0 },
