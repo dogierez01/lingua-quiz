@@ -70,36 +70,45 @@
             box-shadow: 0 4px 15px rgba(255,255,255,0.1);
         }
 
+        /* --- BUTTON GROUPS (SIDE-BY-SIDE LAYOUT) --- */
         .test-btn-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
             width: 100%;
-            max-width: 280px;
+            max-width: 340px;
             margin-bottom: 25px;
+        }
+
+        .test-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            width: 100%;
         }
 
         .start-btn-main {
             background-color: #1F7A5D;
             color: #ffffff;
             border: 2px solid #ffffff;
-            padding: 12px 20px;
-            font-size: 1.2rem;
+            padding: 12px 5px;
+            font-size: 1rem;
             font-weight: 800;
-            border-radius: 50px;
+            border-radius: 30px;
             cursor: pointer;
             transition: transform 0.2s ease, background-color 0.2s ease;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            width: 100%;
+            flex: 1; 
+            white-space: nowrap;
         }
 
         .start-btn-main:hover { transform: scale(1.05); background-color: #279672; box-shadow: 0 0 20px #279672; }
 
         .btn-resume { background-color: #f39c12 !important; border-color: #f1c40f !important; }
         
-        .btn-voice { background-color: #2980b9 !important; border-color: #3498db !important; margin-top: 10px;}
+        .btn-voice { background-color: #2980b9 !important; border-color: #3498db !important; }
         .btn-voice:hover { background-color: #3498db !important; box-shadow: 0 0 20px #3498db !important; }
 
         /* --- DASHBOARD STYLES --- */
@@ -109,7 +118,7 @@
             border-radius: 12px;
             padding: 15px;
             width: 100%;
-            max-width: 320px;
+            max-width: 340px;
             text-align: left;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
@@ -219,21 +228,28 @@
     <div class="logo-container">
         <img src="logo.png?v=3" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found';">
     </div>
-    <button class="start-btn-main" onclick="showInstructions()">ENTER</button>
+    <button class="start-btn-main" style="width:200px;" onclick="showInstructions()">ENTER</button>
 </div>
 
 <div class="app-screen" id="instructions-screen">
     <img src="guide.png?v=3" alt="Instructions" class="instructions-img" onerror="this.onerror=null; this.alt='Image not found. Check filename!'; this.style.color='white';">
-    <button class="start-btn-main" onclick="showMainMenu()">CONTINUE</button>
+    <button class="start-btn-main" style="width:200px;" onclick="showMainMenu()">CONTINUE</button>
 </div>
 
 <div class="app-screen" id="main-menu-screen">
     <div class="test-btn-group">
-        <button class="start-btn-main" id="btn-test-1" onclick="startQuiz(1)">TEST 1</button>
-        <button class="start-btn-main" id="btn-test-2" onclick="startQuiz(2)">TEST 2</button>
-        <button class="start-btn-main" id="btn-test-3" onclick="startQuiz(3)">TEST 3</button>
-        <hr style="border-color: #333; width: 100%; margin: 5px 0;">
-        <button class="start-btn-main btn-voice" onclick="startVoiceChallenge()">🎤 VOICE CHALLENGE</button>
+        <div class="test-row">
+            <button class="start-btn-main" id="btn-test-1" onclick="startQuiz(1)">TEST 1</button>
+            <button class="start-btn-main btn-voice" onclick="startVoiceChallenge(1)">🎤 VOICE 1</button>
+        </div>
+        <div class="test-row">
+            <button class="start-btn-main" id="btn-test-2" onclick="startQuiz(2)">TEST 2</button>
+            <button class="start-btn-main btn-voice" onclick="startVoiceChallenge(2)">🎤 VOICE 2</button>
+        </div>
+        <div class="test-row">
+            <button class="start-btn-main" id="btn-test-3" onclick="startQuiz(3)">TEST 3</button>
+            <button class="start-btn-main btn-voice" onclick="startVoiceChallenge(3)">🎤 VOICE 3</button>
+        </div>
     </div>
     
     <div class="dashboard-container" id="dashboard-container" style="display: none;">
@@ -283,11 +299,11 @@
     </div>
     <h1 id="result-title">Test Completed!</h1>
     <h2 id="score-text"></h2>
-    <button class="start-btn-main" style="margin: 0 auto;" onclick="showMainMenu()">Return to Menu</button>
+    <button class="start-btn-main" style="width:200px; margin: 0 auto;" onclick="showMainMenu()">Return to Menu</button>
 </div>
 
 <script>
-    // --- CORRECTED 66 SENTENCES DATA ---
+    // --- FINAL 66 SENTENCES DATA ---
     const originalQuizData = [
         { q: "Para bulmak zorundayız yoksa o arabayı satın alamayız", options: ["We have to find money, otherwise we can't buy that car.", "We must to find money, otherwise we can't buy that car.", "We have to find money, unless we can't buy that car."], answer: 0 },
         { q: "Parası yoktu ama tatile gidebiliyordu", options: ["He didn't have money, but he could go on a holiday.", "He hadn't money, but he could go on a holiday.", "He didn't have money, but he was able to go on a holiday."], answer: 0 },
@@ -307,7 +323,7 @@
         { q: "Oda servisi gelene kadar koridorda beklemek zorunda kaldım", options: ["I had to wait in the corridor until the room service arrived.", "I had to wait in the corridor by the time the room service arrived.", "I had wait in the corridor until the room service arrived."], answer: 0 },
         { q: "Annem soya sosu kullanarak tavuk kızartırdı", options: ["My mother used to fry chicken by using soy sauce.", "My mother used to fry chicken with using soy sauce.", "My mother was used to fry chicken by using soy sauce."], answer: 0 },
         { q: "Şımarık bir şekilde herkese yeni arabasını gösteriyordu", options: ["He was showing his new car to everybody in a spoiled way.", "He was showing his new car to everyone by a spoiled way.", "He was showing his new car to everyone with a spoiled way."], answer: 0 },
-        { q: "Hatasını düzeltmek için hiçbir şey yapmadı", options: ["He did nothing to fix his mistake.", "He didn't nothing to fix his mistake.", "He did nothing for fix his mistake."], answer: 0 },
+        { q: "Hatasını düzeltmek için hiçbir şey yapmadı", options: ["He did nothing in order to fix his mistake.", "He didn't nothing to fix his mistake.", "He did nothing for fix his mistake."], answer: 0 },
         { q: "Hatasını düzelsin diye onu uyarmıştım", options: ["I had warned him so that he could fix his mistake.", "I had warned him for he could fix his mistake.", "I had warned him so as to he could fix his mistake."], answer: 0 },
         { q: "Amerika'da herkes şişmanlıyordu", options: ["Everybody was getting fat in America.", "Everyone were getting fat in America.", "Everyone was get fat in America."], answer: 0 },
         { q: "Kuzenim kışın hastalanırdı", options: ["My cousin used to get ill in the winter.", "My cousin used to got ill in the winter.", "My cousin was used to get ill in the winter."], answer: 0 },
@@ -329,7 +345,7 @@
         { q: "Otobüs gelene kadar yağmurda beklemek zorunda kaldım", options: ["I had to wait in the rain until the bus arrived.", "I had to wait in the rain by the time the bus arrived.", "I had wait in the rain until the bus arrived."], answer: 0 },
         { q: "Babam eski parçalar kullanarak arabaları tamir ederdi", options: ["My father used to fix cars by using old parts.", "My father used to fix cars with using old parts.", "My father was used to fix cars by using old parts."], answer: 0 },
         { q: "Gururlu bir şekilde herkese yeni projesini açıklıyordu", options: ["He was explaining his new project to everybody in a proud way.", "He was explaining his new project to everyone by a proud way.", "He was explaining his new project to everyone with a proud way."], answer: 0 },
-        { q: "Arkadaşlarına yardım etmek için hiçbir şey yapmadı", options: ["He did nothing to help his friends.", "He didn't nothing to help his friends.", "He did nothing for help his friends."], answer: 0 },
+        { q: "Arkadaşlarına yardım etmek için hiçbir şey yapmadı", options: ["He did nothing in order to help his friends.", "He didn't nothing to help his friends.", "He did nothing for help his friends."], answer: 0 },
         { q: "Uçuşunu yakalasın diye onu aramıştım", options: ["I had called him so that he could catch his flight.", "I had called him for he could catch his flight.", "I had called him so as to he could catch his flight."], answer: 0 },
         { q: "Toplantıda herkes sinirleniyordu", options: ["Everybody was getting angry in the meeting.", "Everyone were getting angry in the meeting.", "Everyone was get angry in the meeting."], answer: 0 },
         { q: "Büyükbabam yazın yorulurdu", options: ["My grandfather used to get tired in the summer.", "My grandfather used to got tired in the summer.", "My grandfather was used to get tired in the summer."], answer: 0 },
@@ -351,7 +367,7 @@
         { q: "Müdür gelene kadar salonda beklemek zorunda kaldım", options: ["I had to wait in the hall until the manager arrived.", "I had to wait in the hall by the time the manager arrived.", "I had wait in the hall until the manager arrived."], answer: 0 },
         { q: "Öğrencilerim sözlük kullanarak metinleri çevirirdi", options: ["My students used to translate the texts by using a dictionary.", "My students used to translate the texts with using a dictionary.", "My students were used to translate the texts by using a dictionary."], answer: 0 },
         { q: "Heyecanlı bir şekilde arkadaşlarına tatilini anlatıyordu", options: ["She was explaining her holiday to her friends in an excited way.", "She was explaining her holiday to her friends by an excited way.", "She was explaining her holiday to her friends with an excited way."], answer: 0 },
-        { q: "Sınavı geçmek için hiçbir şey yapmadı", options: ["He did nothing to pass the exam.", "He didn't nothing to pass the exam.", "He did nothing for pass the exam."], answer: 0 },
+        { q: "Sınavı geçmek için hiçbir şey yapmadı", options: ["He did nothing in order to pass the exam.", "He didn't nothing to pass the exam.", "He did nothing for pass the exam."], answer: 0 },
         { q: "Otobüsü yakalasın diye onu uyandırmıştım", options: ["I had woken him up so that he could catch the bus.", "I had woken him up for he could catch the bus.", "I had woken him up so as to he could catch the bus."], answer: 0 },
         { q: "Sınıfta herkes sıkılıyordu", options: ["Everybody was getting bored in the classroom.", "Everyone were getting bored in the classroom.", "Everyone was get bored in the classroom."], answer: 0 },
         { q: "Kardeşim yazın susardı", options: ["My brother used to get thirsty in the summer.", "My brother used to got thirsty in the summer.", "My brother was used to get thirsty in the summer."], answer: 0 }
@@ -390,7 +406,7 @@
     }
 
     // ==========================================
-    // MULTIPLE CHOICE LOGIC (UNTOUCHED)
+    // MULTIPLE CHOICE LOGIC
     // ==========================================
     let currentQuizData = [];
     let currentQuestionIndex = 0;
@@ -538,8 +554,8 @@
     let vScore = 0;
     let vAttempts = 0;
     let isListening = false;
+    let activeVoiceTestId = 1;
 
-    // Web Speech API Setup
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
     
@@ -562,14 +578,22 @@
         };
     }
 
-    function startVoiceChallenge() {
+    function startVoiceChallenge(testId) {
         if (!SpeechRecognition) {
             alert("Your browser does not support Voice Recognition. Please use Google Chrome or Safari.");
             return;
         }
-        vScore = 0; vIndex = 0;
+        
+        activeVoiceTestId = testId;
+        vScore = 0; 
+        vIndex = 0;
         document.getElementById('v-score').textContent = vScore;
-        voiceData = shuffleArray(originalQuizData);
+        
+        const startIndex = (testId - 1) * 22;
+        const endIndex = startIndex + 22;
+        const slicedData = originalQuizData.slice(startIndex, endIndex);
+        
+        voiceData = shuffleArray(slicedData);
         switchScreen('voice');
         loadVoiceCard();
     }
@@ -578,7 +602,7 @@
         vAttempts = 0;
         const currentCard = voiceData[vIndex];
         
-        document.getElementById('v-progress-text').textContent = `Card ${vIndex + 1} of ${voiceData.length}`;
+        document.getElementById('v-progress-text').textContent = `Card ${vIndex + 1} of ${voiceData.length} (Voice ${activeVoiceTestId})`;
         document.getElementById('v-tr-text').textContent = currentCard.q;
         
         const enTextEl = document.getElementById('v-en-text');
@@ -607,11 +631,11 @@
         document.getElementById('mic-btn').classList.remove('mic-pulsing');
     }
 
-    // --- THE LENIENCY ENGINE ---
+    // --- THE LENIENCY ENGINE (UPGRADED) ---
     function normalizeText(str) {
         let s = str.toLowerCase();
 
-        // 1. Expand Contractions (So "didn't" and "did not" match perfectly)
+        // 1. Expand Contractions 
         const contractions = {
             "i'll": "i will", "you'll": "you will", "he'll": "he will", "she'll": "she will", "we'll": "we will", "they'll": "they will",
             "i'm": "i am", "you're": "you are", "we're": "we are", "they're": "they are",
@@ -643,13 +667,20 @@
             "must": "have to",
             "need to": "have to",
             "ought to": "should",
-            "complete": "finish"
+            "complete": "finish",
+            "in order to": "to" 
         };
         for (let key in synonyms) {
             s = s.replace(new RegExp("\\b" + key + "\\b", "g"), synonyms[key]);
         }
 
-        // 4. Remove extra spaces
+        // 4. THE WIPE: Remove all Articles and Determiners
+        s = s.replace(/\b(a|an|the|this|that|these|those)\b/g, "");
+
+        // 5. THE EQUALIZER: Turn all prepositions into "in"
+        s = s.replace(/\b(in|on|at)\b/g, "in");
+
+        // 6. Clean up extra spaces left behind by the wipe
         return s.replace(/\s+/g, " ").trim();
     }
 
@@ -657,7 +688,6 @@
         vAttempts++;
         const targetText = voiceData[vIndex].options[voiceData[vIndex].answer];
         
-        // Pass both through the Leniency Engine
         const cleanedSpoken = normalizeText(spokenText);
         const cleanedTarget = normalizeText(targetText);
         
@@ -667,7 +697,6 @@
         const nextBtn = document.getElementById('v-next-btn');
 
         if (cleanedSpoken === cleanedTarget) {
-            // SUCCESS
             enTextEl.textContent = targetText;
             enTextEl.style.display = "block";
             enTextEl.classList.add("text-green");
@@ -685,7 +714,6 @@
             }
             document.getElementById('v-score').textContent = vScore;
         } else {
-            // FAIL
             if (vAttempts === 1) {
                 feedbackEl.textContent = `You said: "${spokenText}". Missed! Try one more time.`;
                 feedbackEl.style.color = "#e74c3c";
@@ -694,7 +722,7 @@
                 feedbackEl.style.color = "#e74c3c";
                 enTextEl.textContent = targetText;
                 enTextEl.style.display = "block";
-                enTextEl.classList.add("text-yellow"); // Yellow on fail
+                enTextEl.classList.add("text-yellow"); 
                 micBtn.disabled = true;
                 nextBtn.style.display = "block";
             }
@@ -707,7 +735,7 @@
             loadVoiceCard();
         } else {
             switchScreen('result');
-            document.getElementById('result-title').textContent = "Voice Challenge Complete!";
+            document.getElementById('result-title').textContent = `Voice ${activeVoiceTestId} Complete!`;
             document.getElementById('score-text').textContent = `Total Score: ${vScore}`;
         }
     }
