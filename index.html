@@ -236,13 +236,13 @@
 
 <div class="app-screen active-screen" id="splash-screen">
     <div class="logo-container">
-        <img src="logo.png" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found';">
+        <img src="logo.png?v=2" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found';">
     </div>
     <button class="start-btn-main" onclick="showInstructions()">ENTER</button>
 </div>
 
 <div class="app-screen" id="instructions-screen">
-    <img src="instructions.png" alt="Instructions" class="instructions-img" onerror="this.onerror=null; this.alt='Instruction image not found. Check filename!'; this.style.color='white';">
+    <img src="instructions.png?v=2" alt="Instructions" class="instructions-img" onerror="this.onerror=null; this.alt='Instruction image not found. Check filename!'; this.style.color='white';">
     <button class="start-btn-main" onclick="showMainMenu()">CONTINUE</button>
 </div>
 
@@ -396,10 +396,9 @@
     function showMainMenu() {
         switchScreen('menu');
         loadScoresDisplay();
-        updateTestButtons(); // Check if any tests are in progress
+        updateTestButtons(); 
     }
 
-    // Update buttons to show "(Resume)" if progress exists
     function updateTestButtons() {
         for(let i=1; i<=3; i++) {
             const btn = document.getElementById(`btn-test-${i}`);
