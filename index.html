@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Grammar Quiz</title>
     <style>
+        /* --- BASE STYLES --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: #000000; /* Pitch black background */
+            color: #ffffff; /* Pure white text */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,90 +18,185 @@
             padding: 20px;
             box-sizing: border-box;
         }
-        .quiz-container {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 100%;
-            padding: 30px;
+
+        /* --- WELCOME SCREEN STYLES --- */
+        .welcome-screen {
+            display: flex; /* Flex initially to show center content */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            max-width: 900px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in;
         }
+
+        .logo-container {
+            width: 280px; /* Big size */
+            height: 280px;
+            border-radius: 50%; /* Perfect Circle */
+            overflow: hidden; /* Crop image to circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
+            background-color: #000;
+            /* NEON GLOW EFFECT - Cyan/Bright Blue Color */
+            box-shadow: 
+                0 0 10px #00ffff, /* Inner bright ring */
+                0 0 30px #00b7ff, /* Middle glow */
+                0 0 60px #00b7ff, /* Outer glow */
+                inset 0 0 20px #00ffff; /* Inner rim glow */
+            border: 4px solid #ffffff; /* White defined ring defined ring around it */
+            animation: neon-pulse 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes neon-pulse {
+            from {
+                box-shadow: 0 0 10px #00ffff, 0 0 30px #00b7ff, 0 0 60px #00b7ff, inset 0 0 20px #00ffff;
+            }
+            to {
+                 box-shadow: 0 0 15px #00ffff, 0 0 45px #00b7ff, 0 0 85px #00b7ff, inset 0 0 30px #00ffff;
+            }
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure logo fills the circle */
+        }
+
+        .start-btn-main {
+            background-color: #1F7A5D; /* Pine Green */
+            color: #ffffff; /* White Text */
+            border: 3px solid #ffffff;
+            padding: 25px 60px;
+            font-size: 2.5rem; /* Massive font */
+            font-weight: 800;
+            border-radius: 50px; /* Pill shape */
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .start-btn-main:hover {
+            transform: scale(1.05);
+            background-color: #279672; /* Slightly lighter pine green on hover */
+             box-shadow: 0 0 20px #279672;
+        }
+
+
+        /* --- QUIZ CONTAINER STYLES --- */
+        .quiz-container {
+            /* Hidden initially, shown via JS */
+            display: none; 
+            background-color: #000000;
+            border: 2px solid #333333;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(255,255,255,0.05);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         h2 {
-            color: #2c3e50;
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            min-height: 60px;
+            color: #ffffff;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            min-height: 80px;
         }
         .progress {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            color: #aaaaaa;
+            margin-bottom: 30px;
+            font-weight: bold;
         }
         .options {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 20px;
         }
         button.option-btn {
-            background-color: #ecf0f1;
-            border: 2px solid #bdc3c7;
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 1rem;
+            background-color: #111111;
+            border: 3px solid #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            font-size: 1.8rem;
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: left;
-            color: #2c3e50;
+            color: #ffffff;
+            line-height: 1.4;
         }
         button.option-btn:hover:not(:disabled) {
-            background-color: #e0e6ed;
-            border-color: #95a5a6;
+            background-color: #333333;
         }
         button.option-btn:disabled {
             cursor: not-allowed;
         }
-        /* Color states requested by you */
+        /* Color states for Correct/Incorrect/Missed */
         button.option-btn.correct {
             background-color: #2ecc71 !important; /* Green */
             border-color: #27ae60 !important;
-            color: white !important;
+            color: #ffffff !important;
         }
         button.option-btn.incorrect {
             background-color: #e74c3c !important; /* Red */
             border-color: #c0392b !important;
-            color: white !important;
+            color: #ffffff !important;
         }
         button.option-btn.missed-correct {
             background-color: #3498db !important; /* Blue */
             border-color: #2980b9 !important;
-            color: white !important;
+            color: #ffffff !important;
         }
         .next-btn {
-            margin-top: 25px;
-            background-color: #34495e;
-            color: white;
+            margin-top: 40px;
+            background-color: #ffffff;
+            color: #000000;
             border: none;
-            padding: 12px 25px;
-            font-size: 1rem;
-            border-radius: 8px;
+            padding: 20px 30px;
+            font-size: 2rem;
+            font-weight: bold;
+            border-radius: 12px;
             cursor: pointer;
             display: none;
             width: 100%;
         }
         .next-btn:hover {
-            background-color: #2c3e50;
+            background-color: #cccccc;
         }
         .result-screen {
             display: none;
         }
         .result-screen h1 {
-            color: #27ae60;
+            color: #2ecc71;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        #score-text {
+            font-size: 2.5rem;
         }
     </style>
 </head>
 <body>
 
+<div class="welcome-screen" id="welcome-screen">
+    <div class="logo-container">
+        <img src="logo.PNG" alt="Quiz Logo" class="logo-img">
+    </div>
+    <button class="start-btn-main" id="start-quiz-btn">START QUIZ</button>
+</div>
 <div class="quiz-container" id="quiz-box">
     <div class="progress" id="progress-text">Question 1 of 30</div>
     <h2 id="question-text">Loading question...</h2>
@@ -109,13 +204,11 @@
         </div>
     <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question</button>
 </div>
-
 <div class="quiz-container result-screen" id="result-box">
     <h1>Quiz Completed!</h1>
     <h2 id="score-text">You scored X out of Y</h2>
     <button class="next-btn" style="display: block;" onclick="location.reload()">Restart Quiz</button>
 </div>
-
 <script>
     // The dataset of 30 questions with tricky grammar distractors
     const quizData = [
@@ -394,13 +487,27 @@
     let currentQuestionIndex = 0;
     let score = 0;
 
+    // DOM elements
+    const welcomeScreen = document.getElementById("welcome-screen");
+    const startQuizBtn = document.getElementById("start-quiz-btn");
+    const quizBox = document.getElementById("quiz-box");
+    const resultBox = document.getElementById("result-box");
+    
     const questionText = document.getElementById("question-text");
     const optionsContainer = document.getElementById("options-container");
     const nextBtn = document.getElementById("next-btn");
     const progressText = document.getElementById("progress-text");
-    const quizBox = document.getElementById("quiz-box");
-    const resultBox = document.getElementById("result-box");
     const scoreText = document.getElementById("score-text");
+
+    // Start Button Event Listener
+    startQuizBtn.addEventListener('click', () => {
+        // Hide welcome screen with a fade out (optional but nice)
+        welcomeScreen.style.display = 'none';
+        // Show quiz box, set display to block to override CSS hidden
+        quizBox.style.display = 'block';
+        // Load the first question
+        loadQuestion();
+    });
 
     function loadQuestion() {
         // Reset state
@@ -456,8 +563,8 @@
         scoreText.textContent = `You scored ${score} out of ${quizData.length}!`;
     }
 
-    // Initialize Quiz
-    loadQuestion();
+    // Note: loadQuestion() is no longer called automatically at the end.
+    // It is called when the Start button is clicked.
 </script>
 
 </body>
