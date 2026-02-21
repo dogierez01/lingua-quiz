@@ -42,11 +42,7 @@
             align-items: center;
             margin-bottom: 40px;
             background-color: #000;
-            box-shadow: 
-                0 0 10px #00ffff, 
-                0 0 30px #00b7ff, 
-                0 0 60px #00b7ff, 
-                inset 0 0 20px #00ffff;
+            box-shadow: 0 0 10px #00ffff, 0 0 30px #00b7ff, 0 0 60px #00b7ff, inset 0 0 20px #00ffff;
             border: 3px solid #ffffff;
             animation: neon-pulse 2s infinite alternate ease-in-out;
         }
@@ -71,13 +67,6 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin-bottom: 10px;
-        }
-
-        .start-btn-main:hover {
-            transform: scale(1.05);
-            background-color: #279672;
-            box-shadow: 0 0 20px #279672;
         }
 
         /* --- QUIZ CONTAINER STYLES --- */
@@ -114,44 +103,22 @@
             background-color: transparent;
             color: #ffffff;
             border: 2px solid #555555;
-            padding: 6px 10px;
+            padding: 6px 12px;
             font-size: 0.7rem;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
         .restart-header-btn { border-color: #e74c3c; color: #e74c3c; }
 
-        .return-btn:hover { background-color: #333333; border-color: #ffffff; }
-        .restart-header-btn:hover { background-color: #e74c3c; color: white; }
-
-        .tally {
-            font-size: 1.05rem;
-            font-weight: bold;
-        }
-
+        .tally { font-size: 1.05rem; font-weight: bold; }
         .tally-correct { color: #2ecc71; margin-right: 10px; }
         .tally-incorrect { color: #e74c3c; }
 
-        h2 {
-            color: #ffffff;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            line-height: 1.4;
-            min-height: 50px;
-        }
-        .progress {
-            font-size: 0.75rem;
-            color: #aaaaaa;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        h2 { font-size: 1.2rem; line-height: 1.4; min-height: 50px; margin-bottom: 20px; }
+        .progress { font-size: 0.75rem; color: #aaaaaa; margin-bottom: 20px; font-weight: bold; }
+        
+        .options { display: flex; flex-direction: column; gap: 10px; }
         button.option-btn {
             background-color: #111111;
             border: 2px solid #ffffff;
@@ -159,16 +126,14 @@
             padding: 10px;
             font-size: 1.05rem;
             cursor: pointer;
-            transition: all 0.2s ease;
             text-align: left;
             color: #ffffff;
             line-height: 1.3;
         }
-        button.option-btn:hover:not(:disabled) { background-color: #333333; }
-        button.option-btn:disabled { cursor: not-allowed; }
-        button.option-btn.correct { background-color: #2ecc71 !important; border-color: #27ae60 !important; color: #ffffff !important; }
-        button.option-btn.incorrect { background-color: #e74c3c !important; border-color: #c0392b !important; color: #ffffff !important; }
-        button.option-btn.missed-correct { background-color: #3498db !important; border-color: #2980b9 !important; color: #ffffff !important; }
+
+        button.option-btn.correct { background-color: #2ecc71 !important; border-color: #27ae60 !important; }
+        button.option-btn.incorrect { background-color: #e74c3c !important; border-color: #c0392b !important; }
+        button.option-btn.missed-correct { background-color: #3498db !important; border-color: #2980b9 !important; }
 
         .next-btn {
             margin-top: 20px;
@@ -183,18 +148,18 @@
             display: none;
             width: 100%;
         }
-        .next-btn:hover { background-color: #cccccc; }
 
-        .result-screen { display: none; }
-        .result-screen h1 { color: #2ecc71; font-size: 1.9rem; margin-bottom: 15px; }
+        .result-screen h1 { color: #2ecc71; font-size: 1.9rem; }
         #score-text { font-size: 1.4rem; }
     </style>
 </head>
-<body class="notranslate"> <div class="welcome-screen" id="welcome-screen">
+<body class="notranslate">
+
+<div class="welcome-screen" id="welcome-screen">
     <div class="logo-container">
-        <img src="logo.png" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found. Check exact filename in repo!'; this.style.color='white';">
+        <img src="logo.png" alt="Quiz Logo" class="logo-img" onerror="this.onerror=null; this.alt='Logo not found';">
     </div>
-    <button class="start-btn-main" id="start-quiz-btn" onclick="startQuiz()">START QUIZ</button>
+    <button class="start-btn-main" onclick="startQuiz()">START QUIZ</button>
 </div>
 
 <div class="quiz-container" id="quiz-box">
@@ -208,33 +173,28 @@
             <span class="tally-incorrect" id="tally-incorrect-display">0 Incorrect</span>
         </div>
     </div>
-    
     <div class="progress" id="progress-text">Question 1 of 66</div>
-    <h2 id="question-text">Loading question...</h2>
-    <div class="options" id="options-container" translate="no">
-    </div>
+    <h2 id="question-text">Loading...</h2>
+    <div class="options" id="options-container" translate="no"></div>
     <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question</button>
 </div>
 
-<div class="quiz-container result-screen" id="result-box">
-    <div class="header-bar" style="justify-content: flex-start;">
-        <button class="return-btn" onclick="returnToHome()">&#8592; Return Home</button>
-    </div>
+<div class="quiz-container" id="result-box" style="display:none;">
     <h1>Quiz Completed!</h1>
-    <h2 id="score-text">You scored X out of Y</h2>
+    <h2 id="score-text"></h2>
     <button class="next-btn" style="display: block;" onclick="restartQuizSession()">Start Fresh</button>
 </div>
 
 <script>
     const originalQuizData = [
         { q: "Para bulmak zorundayız yoksa o arabayı satın alamayız", options: ["We have to find money, otherwise we can't buy that car.", "We must to find money, otherwise we can't buy that car.", "We have to find money, unless we can't buy that car."], answer: 0 },
-        { q: "Parası yoktu ama tatile gidebiliyordu", options: ["He didn't have money, but he was able to go on a holiday.", "He hadn't money, but he was able to go on a holiday.", "He didn't have money, but he could to go on a holiday."], answer: 0 },
+        { q: "Parası yoktu ama tatile gidebiliyordu", options: ["He didn't have money, but he could enter the concert.", "He hadn't money, but he could enter the concert.", "He didn't have money, but he could enter the concert."], answer: 0 },
         { q: "Para biriktirmelisin ve yeni bir araba satın almalısın", options: ["You have to save money and you have to buy a new car.", "You have to save money and you must to buy a new car.", "You should saving money and you have to buy a new car."], answer: 0 },
         { q: "Dosyada hata vardı bu yüzden dosyayı açamadık", options: ["There was an error in the file, so we couldn't open the file.", "There was an error in the file, so we didn't can open the file.", "It was an error in the file, so we couldn't open the file."], answer: 0 },
         { q: "Yeni dosyayı yazacağım ve sana yollayacağım", options: ["I will write the new file and I will send it to you.", "I am write the new file and I will send it to you.", "I will write the new file and I send to you."], answer: 0 },
         { q: "Köpeğimi yorgundu Bu yüzden onunla top oynayamadık", options: ["My dog was tired, so we couldn't play ball with him.", "My dog was tired, because we couldn't play ball with him.", "My dog was tired, so we haven't play ball with him."], answer: 0 },
         { q: "Köpeğim parkta koştu ve kedileri kovaladı", options: ["My dog ran in the park and chased cats.", "My dog runned in the park and chased cats.", "My dog was running in the park and chase cats."], answer: 0 },
-        { q: "Hiç kimseye güvenmem yoksa sana şifremi verebilirim", options: ["I don't trust anyone, otherwise I can give you my password.", "I don't trust anyone, unless I can give you my password.", "I am not trust anyone, otherwise I can give you my password."], answer: 0 },
+        { q: "Hiç kimseye güvenmem yoksa sana şifremi verebilirim", options: ["I trust nobody, otherwise I can give you my password.", "I don't trust anyone, unless I can give you my password.", "I am not trust anyone, otherwise I can give you my password."], answer: 0 },
         { q: "Oteldeki Gürültüden dolayı odamı değiştirmek zorunda kaldım", options: ["I had to change my room due to the noise in the hotel.", "I had to change my room because the noise in the hotel.", "I had to change my room due to there was noise in the hotel."], answer: 0 },
         { q: "Odadaki kokuya rağmen o odayı değiştirmediler", options: ["They didn't change that room despite the smell in the room.", "They didn't change that room although the smell in the room.", "They didn't change that room despite of the smell in the room."], answer: 0 },
         { q: "Otelde kaldığımda nakiti kasaya kitlerdim", options: ["I used to lock the cash in the safe when I stayed at the hotel.", "I was used to lock the cash in the safe when I stayed at the hotel.", "I used to locking the cash in the safe when I stayed at the hotel."], answer: 0 },
@@ -244,35 +204,35 @@
         { q: "Yedek anahtarım olmasına rağmen kapıyı açamıyordum", options: ["I couldn't open the door although I had a spare key.", "I couldn't open the door despite I had a spare key.", "I couldn't open the door although having a spare key."], answer: 0 },
         { q: "Oda servisi gelene kadar koridorda beklemek zorunda kaldım", options: ["I had to wait in the corridor until the room service arrived.", "I had to wait in the corridor by the time the room service arrived.", "I had wait in the corridor until the room service arrived."], answer: 0 },
         { q: "Annem soya sosu kullanarak tavuk kızartırdı", options: ["My mother used to fry chicken by using soy sauce.", "My mother used to fry chicken with using soy sauce.", "My mother was used to fry chicken by using soy sauce."], answer: 0 },
-        { q: "Şımarık bir şekilde herkese yeni arabasını gösteriyordu", options: ["He was showing his new car to everyone in a spoiled way.", "He was showing his new car to everyone by a spoiled way.", "He was showing his new car to everyone with a spoiled way."], answer: 0 },
+        { q: "Şımarık bir şekilde herkese yeni arabasını gösteriyordu", options: ["He was showing his new car to everybody in a spoiled way.", "He was showing his new car to everyone by a spoiled way.", "He was showing his new car to everyone with a spoiled way."], answer: 0 },
         { q: "Hatasını düzeltmek için hiçbir şey yapmadı", options: ["He did nothing to fix his mistake.", "He didn't nothing to fix his mistake.", "He did nothing for fix his mistake."], answer: 0 },
         { q: "Hatasını düzelsin diye onu uyarmıştım", options: ["I had warned him so that he could fix his mistake.", "I had warned him for he could fix his mistake.", "I had warned him so as to he could fix his mistake."], answer: 0 },
-        { q: "Amerika'da everyone was getting fat", options: ["Everyone was getting fat in America.", "Everyone were getting fat in America.", "Everyone was get fat in America."], answer: 0 },
+        { q: "Amerika'da herkes şişmanlıyordu", options: ["Everybody was getting fat in America.", "Everyone were getting fat in America.", "Everyone was get fat in America."], answer: 0 },
         { q: "Kuzenim kışın hastalanırdı", options: ["My cousin used to get ill in the winter.", "My cousin used to got ill in the winter.", "My cousin was used to get ill in the winter."], answer: 0 },
         { q: "Erken uyanmak zorundayız yoksa treni yakalayamayız", options: ["We have to wake up early, otherwise we can't catch the train.", "We have to wake up early, unless we can't catch the train.", "We must to wake up early, otherwise we can't catch the train."], answer: 0 },
-        { q: "Bileti yoktu ama konsere girebiliyordu", options: ["He didn't have a ticket, but he was able to enter the concert.", "He hadn't a ticket, but he was able to enter the concert.", "He didn't have a ticket, but he could to enter the concert."], answer: 0 },
+        { q: "Bileti yoktu ama konsere girebiliyordu", options: ["He didn't have a ticket, but he could enter the concert.", "He hadn't a ticket, but he was able to enter the concert.", "He didn't have a ticket, but he could to enter the concert."], answer: 0 },
         { q: "Çok çalışmalısın ve bu sınavı geçmelisin", options: ["You have to study hard and you have to pass this exam.", "You have to study hard and you must to pass this exam.", "You have study hard and you have to pass this exam."], answer: 0 },
         { q: "Şehirde fırtına vardı bu yüzden evden çıkamadık", options: ["There was a storm in the city, so we couldn't leave the house.", "It was a storm in the city, so we couldn't leave the house.", "There was a storm in the city, because we couldn't leave the house."], answer: 0 },
         { q: "Yemeği hazırlayacağım ve sana getireceğim", options: ["I will prepare the meal and I will bring it to you.", "I am prepare the meal and I will bring it to you.", "I will prepare the meal and I bring it to you."], answer: 0 },
         { q: "Kardeşim meşguldü bu yüzden onunla film izleyemedik", options: ["My brother was busy, so we couldn't watch a movie with him.", "My brother was busy, so we didn't can watch a movie with him.", "My brother was busy, otherwise we couldn't watch a movie with him."], answer: 0 },
         { q: "Kedim masaya zıpladı ve bardakları kırdı", options: ["My cat jumped on the table and broke the glasses.", "My cat jump on the table and broke the glasses.", "My cat jumped on the table and break the glasses."], answer: 0 },
-        { q: "Hiç kimseyi affetmem yoksa seni affedebilirim", options: ["I don't forgive anyone, otherwise I can forgive you.", "I am not forgive anyone, otherwise I can forgive you.", "I don't forgive anyone, unless I can forgive you."], answer: 0 },
+        { q: "Hiç kimseyi affetmem yoksa seni affedebilirim", options: ["I forgive nobody, otherwise I can forgive you.", "I am not forgive anyone, otherwise I can forgive you.", "I don't forgive anyone, unless I can forgive you."], answer: 0 },
         { q: "Şehirdeki sisten dolayı uçuşumu iptal etmek zorunda kaldım", options: ["I had to cancel my flight due to the fog in the city.", "I had to cancel my flight because the fog in the city.", "I had to cancel my flight due to there was fog in the city."], answer: 0 },
         { q: "Mutfaktaki dağınıklığa rağmen o masayı temizlemediler", options: ["They didn't clean that table despite the mess in the kitchen.", "They didn't clean that table although the mess in the kitchen.", "They didn't clean that table in spite the mess in the kitchen."], answer: 0 },
         { q: "Çiftlikte yaşadığımda bahçede kitap okurdum", options: ["I used to read a book in the garden when I lived at the farm.", "I was used to read a book in the garden when I lived at the farm.", "I used to reading a book in the garden when I lived at the farm."], answer: 0 },
         { q: "Otobüsü beklerken kahvemi kafede içiyorum", options: ["I drink my coffee at the cafe while waiting for the bus.", "I drink my coffee at the cafe during waiting for the bus.", "I am drink my coffee at the cafe while waiting for the bus."], answer: 0 },
         { q: "Arabamı garaja park edene kadar arabamı çarpmamıştım", options: ["I hadn't crashed my car until I parked my car in the garage.", "I didn't crash my car until I had parked my car in the garage.", "I haven't crashed my car until I parked my car in the garage."], answer: 0 },
         { q: "Motorumu bozduğumdan dolayı tamirciyi aramak zorunda kaldım", options: ["I had to call the mechanic because I broke my engine.", "I had to call the mechanic due to I broke my engine.", "I had to call the mechanic because of I broke my engine."], answer: 0 },
-        { q: "Sözlüğüm olmasına rağmen metni okuyamıyordum", options: ["I couldn't read the text although I had a dictionary.", "I couldn't read the text despite I had a dictionary.", "I couldn't read the text although having a dictionary."], answer: 0 },
+        { q: "Gözlüğüm olmasına rağmen metni okuyamıyordum", options: ["I couldn't read the text although I had glasses.", "I couldn't read the text despite I had a dictionary.", "I couldn't read the text although having a dictionary."], answer: 0 },
         { q: "Otobüs gelene kadar yağmurda beklemek zorunda kaldım", options: ["I had to wait in the rain until the bus arrived.", "I had to wait in the rain by the time the bus arrived.", "I had wait in the rain until the bus arrived."], answer: 0 },
         { q: "Babam eski parçalar kullanarak arabaları tamir ederdi", options: ["My father used to fix cars by using old parts.", "My father used to fix cars with using old parts.", "My father was used to fix cars by using old parts."], answer: 0 },
-        { q: "Gururlu bir şekilde herkese yeni projesini açıklıyordu", options: ["He was explaining his new project to everyone in a proud way.", "He was explaining his new project to everyone by a proud way.", "He was explaining his new project to everyone with a proud way."], answer: 0 },
+        { q: "Gururlu bir şekilde herkese yeni projesini açıklıyordu", options: ["He was explaining his new project to everybody in a proud way.", "He was explaining his new project to everyone by a proud way.", "He was explaining his new project to everyone with a proud way."], answer: 0 },
         { q: "Arkadaşlarına yardım etmek için hiçbir şey yapmadı", options: ["He did nothing to help his friends.", "He didn't nothing to help his friends.", "He did nothing for help his friends."], answer: 0 },
         { q: "Uçuşunu yakalasın diye onu aramıştım", options: ["I had called him so that he could catch his flight.", "I had called him for he could catch his flight.", "I had called him so as to he could catch his flight."], answer: 0 },
-        { q: "Toplantıda herkes sinirleniyordu", options: ["Everyone was getting angry in the meeting.", "Everyone were getting angry in the meeting.", "Everyone was get angry in the meeting."], answer: 0 },
+        { q: "Toplantıda herkes sinirleniyordu", options: ["Everybody was getting angry in the meeting.", "Everyone were getting angry in the meeting.", "Everyone was get angry in the meeting."], answer: 0 },
         { q: "Büyükbabam yazın yorulurdu", options: ["My grandfather used to get tired in the summer.", "My grandfather used to got tired in the summer.", "My grandfather was used to get tired in the summer."], answer: 0 },
-        { q: "Vizemizi almak zorundayız yoksa o ülkeye giremeyiz", options: ["We have to get our visa, otherwise we can can't enter that country.", "We must to get our visa, otherwise we can't enter that country.", "We have to get our visa, unless we can't enter that country."], answer: 0 },
-        { q: "Zamanı yoktu ama ödevini bitirebiliyordu", options: ["She didn't have time, but she was able to finish her homework.", "She hadn't time, but she was able to finish her homework.", "She didn't have time, but she could to finish her homework."], answer: 0 },
+        { q: "Vizemizi almak zorundayız yoksa o ülkeye giremeyiz", options: ["We have to get our visa, otherwise we can enter that country.", "We must to get our visa, otherwise we can't enter that country.", "We have to get our visa, unless we can't enter that country."], answer: 0 },
+        { q: "Zamanı yoktu ama ödevini bitirebiliyordu", options: ["She didn't have time, but she could finish her homework.", "She hadn't time, but she was able to finish her homework.", "She didn't have time, but she could to finish her homework."], answer: 0 },
         { q: "Kelimeleri öğrenmelisin ve o sınava girmelisin", options: ["You have to learn the words and you have to take that exam.", "You have to learn the words and you must to take that exam.", "You have learn the words and you have to take that exam."], answer: 0 },
         { q: "Yolda trafik vardı bu yüzden havaalanına ulaşamadık", options: ["There was traffic on the road, so we couldn't reach the airport.", "It was traffic on the road, so we couldn't reach the airport.", "There was traffic on the road, because we couldn't reach the airport."], answer: 0 },
         { q: "Odayı temizleyeceğim ve sana haber vereceğim", options: ["I will clean the room and I will let you know.", "I am clean the room and I will let you know.", "I will clean the room and I let you know."], answer: 0 },
@@ -291,7 +251,7 @@
         { q: "Heyecanlı bir şekilde arkadaşlarına tatilini anlatıyordu", options: ["She was explaining her holiday to her friends in an excited way.", "She was explaining her holiday to her friends by an excited way.", "She was explaining her holiday to her friends with an excited way."], answer: 0 },
         { q: "Sınavı geçmek için hiçbir şey yapmadı", options: ["He did nothing to pass the exam.", "He didn't nothing to pass the exam.", "He did nothing for pass the exam."], answer: 0 },
         { q: "Otobüsü yakalasın diye onu uyandırmıştım", options: ["I had woken him up so that he could catch the bus.", "I had woken him up for he could catch the bus.", "I had woken him up so as to he could catch the bus."], answer: 0 },
-        { q: "Sınıfta herkes sıkılıyordu", options: ["Everyone was getting bored in the classroom.", "Everyone were getting bored in the classroom.", "Everyone was get bored in the classroom."], answer: 0 },
+        { q: "Sınıfta herkes sıkılıyordu", options: ["Everybody was getting bored in the classroom.", "Everyone were getting bored in the classroom.", "Everyone was get bored in the classroom."], answer: 0 },
         { q: "Kardeşim yazın susardı", options: ["My brother used to get thirsty in the summer.", "My brother used to got thirsty in the summer.", "My brother was used to get thirsty in the summer."], answer: 0 }
     ];
 
@@ -331,7 +291,6 @@
         tallyIncorrectDisplay.textContent = `${incorrectCount} Incorrect`;
     }
 
-    // Save progress to LocalStorage
     function saveProgress() {
         const state = {
             currentQuestionIndex,
@@ -342,7 +301,6 @@
         localStorage.setItem('grammarQuizState', JSON.stringify(state));
     }
 
-    // Load progress from LocalStorage
     function loadProgress() {
         const saved = localStorage.getItem('grammarQuizState');
         if (saved) {
@@ -356,23 +314,20 @@
         return false;
     }
 
-    // Clear LocalStorage
     function clearProgress() {
         localStorage.removeItem('grammarQuizState');
     }
 
     function restartQuizSession() {
-        if(confirm("This will clear your progress and restart the quiz. Are you sure?")) {
+        if(confirm("Bu, ilerlemeni temizleyecek ve quizi baştan başlatacak. Emin misin?")) {
             clearProgress();
-            startQuiz(true); // Force fresh start
+            startQuiz(true);
         }
     }
 
     function startQuiz(forceFresh = false) {
         let hasSaved = false;
-        if (!forceFresh) {
-            hasSaved = loadProgress();
-        }
+        if (!forceFresh) { hasSaved = loadProgress(); }
 
         if (!hasSaved) {
             score = 0;
@@ -385,14 +340,12 @@
         welcomeScreen.style.display = 'none';
         resultBox.style.display = 'none';
         quizBox.style.display = 'block';
-
         loadQuestion();
     }
 
     function loadQuestion() {
         nextBtn.style.display = "none";
         optionsContainer.innerHTML = "";
-        
         const currentData = currentQuizData[currentQuestionIndex];
         progressText.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuizData.length}`;
         questionText.textContent = currentData.q;
@@ -415,7 +368,6 @@
     function selectAnswer(isCorrect, selectedIndex, newCorrectIndex, selectedButton) {
         const allButtons = document.querySelectorAll(".option-btn");
         allButtons.forEach(btn => btn.disabled = true);
-
         if (isCorrect) {
             selectedButton.classList.add("correct");
             score++;
@@ -424,7 +376,6 @@
             incorrectCount++;
             document.getElementById("btn-" + newCorrectIndex).classList.add("missed-correct");
         }
-
         updateTallyDisplay();
         saveProgress();
         nextBtn.style.display = "block";
@@ -440,12 +391,11 @@
     }
 
     function showResults() {
-        clearProgress(); // Quiz finished, clean up
+        clearProgress();
         quizBox.style.display = "none";
         resultBox.style.display = "block";
-        scoreText.textContent = `You scored ${score} out of ${currentQuizData.length}!`;
+        scoreText.textContent = `Skorun: ${score} / ${currentQuizData.length}`;
     }
 </script>
-
 </body>
 </html>
