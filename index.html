@@ -70,7 +70,29 @@
             box-shadow: 0 4px 15px rgba(255,255,255,0.1);
         }
 
-        /* --- BUTTON GROUPS (SIDE-BY-SIDE LAYOUT) --- */
+        /* --- MAIN MENU SPECIFICS --- */
+        .main-menu-header {
+            width: 100%;
+            max-width: 340px;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .reset-btn {
+            background-color: transparent;
+            color: #e74c3c;
+            border: 2px solid #e74c3c;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .reset-btn:hover { background-color: #e74c3c; color: #ffffff; }
+
         .test-btn-group {
             display: flex;
             flex-direction: column;
@@ -237,6 +259,10 @@
 </div>
 
 <div class="app-screen" id="main-menu-screen">
+    <div class="main-menu-header">
+        <button class="reset-btn" onclick="resetAllData()">Reset All Progress</button>
+    </div>
+
     <div class="test-btn-group">
         <div class="test-row">
             <button class="start-btn-main" id="btn-test-1" onclick="startQuiz(1)">TEST 1</button>
@@ -278,7 +304,7 @@
 
 <div class="app-screen quiz-container" id="voice-box">
     <div class="header-bar">
-        <button class="return-btn" onclick="showMainMenu()">&#8592; Quit</button>
+        <button class="return-btn" onclick="quitVoiceChallenge()">&#8592; Menu</button>
         <div class="voice-score-display">Score: <span id="v-score">0</span></div>
     </div>
     <div class="progress" id="v-progress-text">Card 1</div>
@@ -394,6 +420,14 @@
         switchScreen('menu');
         loadScoresDisplay();
         updateTestButtons(); 
+    }
+
+    // --- RESET ALL DATA ---
+    function resetAllData() {
+        if(confirm("Are you sure you want to delete all your progress and high scores? This cannot be undone!")) {
+            localStorage.clear();
+            location.reload(); 
+        }
     }
 
     function shuffleArray(array) {
@@ -573,8 +607,13 @@
         recognition.onspeechend = () => { stopMicAnimation(); };
         recognition.onerror = (event) => {
             stopMicAnimation();
-            document.getElementById('v-feedback').textContent = "Could not hear you. Try again!";
-            document.getElementById('v-feedback').style.color = "#e74c3c";
+            if(event.error === 'aborted') {
+                document.getElementById('v-feedback').textContent = "Microphone stopped.";
+                document.getElementById('v-feedback').style.color = "#aaaaaa";
+            } else {
+                document.getElementById('v-feedback').textContent = "Could not hear you. Try again!";
+                document.getElementById('v-feedback').style.color = "#e74c3c";
+            }
         };
     }
 
@@ -618,7 +657,12 @@
     }
 
     function toggleMic() {
-        if (isListening) return;
+        if (isListening) {
+            // Allows the user to tap again to manually abort recording
+            recognition.stop();
+            stopMicAnimation();
+            return;
+        }
         isListening = true;
         document.getElementById('mic-btn').classList.add('mic-pulsing');
         document.getElementById('v-feedback').textContent = "Listening...";
@@ -629,6 +673,14 @@
     function stopMicAnimation() {
         isListening = false;
         document.getElementById('mic-btn').classList.remove('mic-pulsing');
+    }
+
+    function quitVoiceChallenge() {
+        if (isListening && recognition) {
+            recognition.stop();
+            stopMicAnimation();
+        }
+        showMainMenu();
     }
 
     // --- THE LENIENCY ENGINE (TARGETED) ---
